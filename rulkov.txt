@@ -1,5 +1,4 @@
-alfa=4
-sigma=0.001
-beta=sigma
-x0=1
-y0=1
+Simular un tiempo largo
+Distinguir regimenes
+Cambiar los parametros
+Alterando los parametros ver como cambian lso spikes
