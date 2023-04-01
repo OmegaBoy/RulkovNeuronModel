@@ -32,7 +32,7 @@ class Rulkov:
             self.y[n] = self.y[n-1]-self.sigma*self.x[n-1]-self.beta
         return (self.x, self.y)
 
-    def ChangeParameter(self, par, value, mode):
+    def ChangeParameter(self, par, value):
         match par:
             case "alpha":
                 self.RulkovModel(alpha=value)
@@ -46,8 +46,4 @@ class Rulkov:
                 self.RulkovModel(y0=value)
             case "N":
                 self.RulkovModel(N=value)
-        match mode:
-            case "fast":
-                return (self.x, self.N)
-            case "slow":
-                return (self.y, self.N)
+        return ((self.x, self.y), self.N)

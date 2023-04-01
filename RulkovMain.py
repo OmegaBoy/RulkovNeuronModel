@@ -10,7 +10,7 @@ sigma = beta
 x0 = -2
 y0 = -3
 N = 10000
-mode = "slow"
+mode = "fast"
 rulkov = Rulkov()
 (x, y) = rulkov.RulkovModel(alpha, beta, sigma, x0, y0, N)
 # %% SLIDER ARAMETERS
@@ -25,7 +25,7 @@ pars = (alphaPar, betaPar, sigmaPar)
 plotting = Plotting()
 step = N/2
 yZoom = 0.8
-if mode == "fast": plotting.SliderPlot(rulkov.x, rulkov.N, step, yZoom, pars)
+if mode == "fast": plotting.SliderPlot((rulkov.x, rulkov.y), rulkov.N, step, yZoom, pars)
 if mode == "slow": plotting.SliderPlot(rulkov.y, rulkov.N, step, yZoom, pars)
 cutoff = 0.9
 # plotting.PlotPhaseSpace(x, y, N, cutoff)
