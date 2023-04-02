@@ -9,7 +9,7 @@ class Plotting:
         self.plt = plt
         self.slider = Slider
 
-    def SliderPlot(self, y, N, step, yZoom, extraSliders=[]):
+    def SliderPlot(self, y, N, step, zoom, extraSliders=[]):
         fig, ax = self.plt.subplots()
         bottom = 0.15
         if len(extraSliders) > 0:
@@ -19,7 +19,7 @@ class Plotting:
         l1, = self.plt.plot(range(0, N), y[0])
         l2, = self.plt.plot(range(0, N), y[1])
         self.plt.axis()
-        self.plt.ylim(min([*y[0], *y[1]])/yZoom, max([*y[0], *y[1]])/yZoom)
+        self.plt.ylim(min([*y[0], *y[1]])/zoom, max([*y[0], *y[1]])/zoom)
         self.plt.xlim(0, step)
 
         axpos = self.plt.axes([0.2, bottom - 0.1, 0.65, 0.03],
@@ -45,8 +45,8 @@ class Plotting:
                 (y, N) = extraSlider0[4](extraSlider0[3], val)
                 l1.set_data(range(0, N), y[0])
                 l2.set_data(range(0, N), y[1])
-                ax.set_ylim(min([*y[0], *y[1]])/yZoom,
-                            max([*y[0], *y[1]])/yZoom)
+                ax.set_ylim(min([*y[0], *y[1]])/zoom,
+                            max([*y[0], *y[1]])/zoom)
 
             s0.on_changed(updatePar0)
 
@@ -62,8 +62,8 @@ class Plotting:
                 (y, N) = extraSlider1[4](extraSlider1[3], val)
                 l1.set_data(range(0, N), y[0])
                 l2.set_data(range(0, N), y[1])
-                ax.set_ylim(min([*y[0], *y[1]])/yZoom,
-                            max([*y[0], *y[1]])/yZoom)
+                ax.set_ylim(min([*y[0], *y[1]])/zoom,
+                            max([*y[0], *y[1]])/zoom)
 
             s1.on_changed(updatePar1)
 
@@ -79,8 +79,8 @@ class Plotting:
                 (y, N) = extraSlider2[4](extraSlider2[3], val)
                 l1.set_data(range(0, N), y[0])
                 l2.set_data(range(0, N), y[1])
-                ax.set_ylim(min([*y[0], *y[1]])/yZoom,
-                            max([*y[0], *y[1]])/yZoom)
+                ax.set_ylim(min([*y[0], *y[1]])/zoom,
+                            max([*y[0], *y[1]])/zoom)
 
             s2.on_changed(updatePar2)
 
@@ -96,8 +96,8 @@ class Plotting:
                 (y, N) = extraSlider3[4](extraSlider3[3], val)
                 l1.set_data(range(0, N), y[0])
                 l2.set_data(range(0, N), y[1])
-                ax.set_ylim(min([*y[0], *y[1]])/yZoom,
-                            max([*y[0], *y[1]])/yZoom)
+                ax.set_ylim(min([*y[0], *y[1]])/zoom,
+                            max([*y[0], *y[1]])/zoom)
 
             s3.on_changed(updatePar3)
 
@@ -113,8 +113,8 @@ class Plotting:
                 (y, N) = extraSlider4[4](extraSlider4[3], val)
                 l1.set_data(range(0, N), y[0])
                 l2.set_data(range(0, N), y[1])
-                ax.set_ylim(min([*y[0], *y[1]])/yZoom,
-                            max([*y[0], *y[1]])/yZoom)
+                ax.set_ylim(min([*y[0], *y[1]])/zoom,
+                            max([*y[0], *y[1]])/zoom)
 
             s4.on_changed(updatePar4)
 
@@ -130,15 +130,15 @@ class Plotting:
                 (y, N) = extraSlider5[4](extraSlider5[3], val)
                 l1.set_data(range(0, N), y[0])
                 l2.set_data(range(0, N), y[1])
-                ax.set_ylim(min([*y[0], *y[1]])/yZoom,
-                            max([*y[0], *y[1]])/yZoom)
+                ax.set_ylim(min([*y[0], *y[1]])/zoom,
+                            max([*y[0], *y[1]])/zoom)
 
             s5.on_changed(updatePar5)
 
         def update(val):
             pos = val
             ax.axis([pos, pos+step, min([*y[0], *y[1]]) /
-                    yZoom, max([*y[0], *y[1]])/yZoom])
+                    zoom, max([*y[0], *y[1]])/zoom])
             fig.canvas.draw_idle()
 
         spos.on_changed(update)

@@ -31,8 +31,8 @@ class Rulkov:
         for n in NI:
             self.x[n] = (self.alpha/(1+(self.x[n-1])**2))+self.y[n-1]
             self.y[n] = self.y[n-1]-self.sigma*self.x[n-1]-self.beta
-        self.x = self.x[0:N]
-        self.y = self.y[0:N]
+        self.x = self.x[0:self.N]
+        self.y = self.y[0:self.N]
         return (self.x, self.y)
 
     def ChangeParameter(self, par, value):
