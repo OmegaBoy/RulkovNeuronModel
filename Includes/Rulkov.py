@@ -22,14 +22,17 @@ class Rulkov:
             self.y0 = y0
         if N != None:
             self.N = int(N)
-        self.x = [0]*self.N
+        NCO=int(self.N*1.1)
+        self.x = [0]*NCO
         self.x[0] = self.x0
-        self.y = [0]*self.N
+        self.y = [0]*NCO
         self.y[0] = self.y0
-        NI = range(1, self.N-1)
+        NI = range(1, NCO-1)
         for n in NI:
             self.x[n] = (self.alpha/(1+(self.x[n-1])**2))+self.y[n-1]
             self.y[n] = self.y[n-1]-self.sigma*self.x[n-1]-self.beta
+        self.x = self.x[0:N]
+        self.y = self.y[0:N]
         return (self.x, self.y)
 
     def ChangeParameter(self, par, value):
