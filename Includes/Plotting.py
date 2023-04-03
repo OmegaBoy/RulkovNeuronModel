@@ -18,6 +18,7 @@ class Plotting:
 
         l1, = self.plt.plot(range(0, N), y[0])
         l2, = self.plt.plot(range(0, N), y[1])
+
         self.plt.axis()
         self.plt.ylim(min([*y[0], *y[1]])/zoom, max([*y[0], *y[1]])/zoom)
         self.plt.xlim(0, step)
@@ -157,16 +158,18 @@ class Plotting:
         self.plt.xlim(min([*x, *y]), max([*x, *y]))
         self.plt.ylim(min([*y]), max([*y]))
 
-        stepSlide = self.plt.axes([0.2, bottom - 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
+        posSlide = self.plt.axes(
+            [0.2, bottom - 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
 
-        spos = self.slider(stepSlide, 'Pos', 0, N-step, orientation='horizontal')
+        spos = self.slider(posSlide, 'Pos', 0, N-step,
+                           orientation='horizontal')
 
-        def update(val):
+        def updatePos(val):
             stepi = int(val)
             stepf = int(val + step)
             l.set_data(x[stepi:stepf], y[stepi:stepf])
             fig.canvas.draw_idle()
 
-        spos.on_changed(update)
-        
+        spos.on_changed(updatePos)
+
         self.plt.show()

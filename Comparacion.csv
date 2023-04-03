@@ -1,0 +1,10 @@
+Alpha;Beta;Sigma;X0;Y0;N;Observacion
+4;0.001;0.001;-2;-3;10^6;Burst cortos de 1-10 con un disparo largo final, se simulo 10^6 y no cambio este comportamiento
+>4;0.001;0.001;-2;-3;5000;A medida que se aumenta el alpha los burst se hacen mas cortos y mas periodicos hasta que se asemejan a un continuo
+<4;0.001;0.001;-2;-3;5000;Los burst se hacen periodicos y el disparo final se alarga y se achica su ringing, luego se hace cada vez mas corto y luego la ecuacion rapida queda constante en aprox -1
+4;>0.001;0.001;-2;-3;5000;Lentamente acorta los burst cortos hasta 0.0016 donde ambas ecuaciones quedan constantes
+4;<0.001;0.001;-2;-3;5000;Alarga los burst largos hasta que queda un solo burst largo por siempre continuo
+4;0.001;>0.001;-2;-3;5000;Alarga los burst largos hasta que queda un solo burst largo por siempre ruidoso
+4;0.001;<0.001;-2;-3;5000;Alarga los burst largos hasta que queda un solo burst largo por siempre ruidoso hasta 0.00064 donde luego camia a valores constantes divergentes
+4;0.001;0.001;<>-2;-3;5000;Se adapta rapido y continua normalmente
+4;0.001;0.001;-2;<>-3;5000;Tiene una zona transiente mayor que al ajustar x0
