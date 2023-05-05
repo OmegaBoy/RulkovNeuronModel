@@ -56,8 +56,8 @@ class Plotting:
 
             def updatePar0(val):
                 datas = extraSlider0[4](extraSlider0[3], val)
-                for d in range(len(datas)):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
+                for d in range(len(datas[0])):
+                    linePlots[d].set_data(datas[0][d][0], datas[0][d][1])
                 _, yMin, _, yMax = self.CalculateBoundaries(datas)
                 ax.set_ylim(yMin/zoom, yMax/zoom)
 

@@ -5,7 +5,7 @@ class Rulkov:
         self.alpha = 0
         self.beta = 0
         self.sigma = 0
-        self.cells = 0
+        self.cells = 1
         self.W = 0
         self.x0 = 0
         self.y0 = 0
@@ -33,8 +33,12 @@ class Rulkov:
         for n in NI:
             self.x[n] = (self.alpha/(1+(self.x[n-1])**2))+self.y[n-1]
             self.y[n] = self.y[n-1]-self.sigma*self.x[n-1]-self.beta
-        self.x = self.x[0:self.N]
-        self.y = self.y[0:self.N]
+        tempx = self.x[0:self.N]
+        tempy = self.y[0:self.N]
+        self.x = [0 for _ in range(1)]
+        self.y = [0 for _ in range(1)]
+        self.x[0] = tempx
+        self.y[0] = tempy
         return (self.x, self.y)
 
     def ChangeParameterRulkovSimple(self, par, value):

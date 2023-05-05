@@ -17,9 +17,9 @@ pars = (alphaPar, betaPar, sigmaPar, x0Par, y0Par)
 # %% PLOTTING
 plotting = Plotting()
 # %% Burst vs N
-# plotting.SliderPlot(y=(rulkov.x, rulkov.y), N=rulkov.N, step=10000, zoom=0.8, extraSliders=pars)
+datas=rulkov.SpikePlots()
+plotting.SliderPlot(datas=datas, step=1000, zoom=0.8, extraSliders=pars)
 # %% Phase Space
-rulkov.ChangeParameterRulkovSimple('N', 4000)
-# plotting.PlotPhaseSpace(rulkov.x, rulkov.y, rulkov.N, step=1000)
+# plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=50000)
 # %% Map
-plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)
+# plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)
