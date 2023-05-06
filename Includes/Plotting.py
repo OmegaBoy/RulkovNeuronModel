@@ -16,17 +16,24 @@ class Plotting:
             self.plt.plot(datas[i][0], datas[i][1], c=color)
         self.plt.show()
 
-    def SliderPlot(self, datas, step, zoom, extraSliders=[]):
-        fig, ax = self.plt.subplots()
+    def SliderPlot(self, datas, step, zoom, together=False, extraSliders=[]):
+        if together:
+            fig, ax = self.plt.subplots()
+        else:
+            fig, ax = self.plt.subplots(len(datas))
         bottom = 0.15
         if len(extraSliders) > 0:
             bottom = 0.5
         self.plt.subplots_adjust(bottom=bottom)
 
         linePlots = []
-        for d in datas:
+        for n in range(len(datas)):
             color = (self.np.random.random(), self.np.random.random(), self.np.random.random())
-            l, = self.plt.plot(d[0], d[1], c=color)
+            marker = "" if len(datas[n]) == 2 else datas[n][2]
+            if together:
+                l, = self.plt.plot(datas[n][0], datas[n][1], c=color, marker=marker)
+            else:
+                l, = ax[n].plot(datas[n][0], datas[n][1], c=color, marker=marker)
             linePlots.append(l)
 
         self.plt.axis()
@@ -57,9 +64,7 @@ class Plotting:
             def updatePar0(val):
                 datas = extraSlider0[4](extraSlider0[3], val)
                 for d in range(len(datas[0])):
-                    linePlots[d].set_data(datas[0][d][0], datas[0][d][1])
-                _, yMin, _, yMax = self.CalculateBoundaries(datas)
-                ax.set_ylim(yMin/zoom, yMax/zoom)
+                    linePlots[d].set_data(datas[d][0], datas[d][1])
 
             s0.on_changed(updatePar0)
 
@@ -75,8 +80,6 @@ class Plotting:
                 datas = extraSlider1[4](extraSlider1[3], val)
                 for d in range(len(datas)):
                     linePlots[d].set_data(datas[d][0], datas[d][1])
-                _, yMin, _, yMax = self.CalculateBoundaries(datas)
-                ax.set_ylim(yMin/zoom, yMax/zoom)
 
             s1.on_changed(updatePar1)
 
@@ -92,8 +95,6 @@ class Plotting:
                 datas = extraSlider2[4](extraSlider2[3], val)
                 for d in range(len(datas)):
                     linePlots[d].set_data(datas[d][0], datas[d][1])
-                _, yMin, _, yMax = self.CalculateBoundaries(datas)
-                ax.set_ylim(yMin/zoom, yMax/zoom)
 
             s2.on_changed(updatePar2)
 
@@ -109,8 +110,6 @@ class Plotting:
                 datas = extraSlider3[4](extraSlider3[3], val)
                 for d in range(len(datas)):
                     linePlots[d].set_data(datas[d][0], datas[d][1])
-                _, yMin, _, yMax = self.CalculateBoundaries(datas)
-                ax.set_ylim(yMin/zoom, yMax/zoom)
 
             s3.on_changed(updatePar3)
 
@@ -126,8 +125,6 @@ class Plotting:
                 datas = extraSlider4[4](extraSlider4[3], val)
                 for d in range(len(datas)):
                     linePlots[d].set_data(datas[d][0], datas[d][1])
-                _, yMin, _, yMax = self.CalculateBoundaries(datas)
-                ax.set_ylim(yMin/zoom, yMax/zoom)
 
             s4.on_changed(updatePar4)
 
@@ -143,14 +140,16 @@ class Plotting:
                 datas = extraSlider5[4](extraSlider5[3], val)
                 for d in range(len(datas)):
                     linePlots[d].set_data(datas[d][0], datas[d][1])
-                _, yMin, _, yMax = self.CalculateBoundaries(datas)
-                ax.set_ylim(yMin/zoom, yMax/zoom)
 
             s5.on_changed(updatePar5)
 
         def update(val):
             pos = val
-            ax.axis([pos, pos+step, yMin/zoom, yMax/zoom])
+            for n in range(len(datas)):
+                if together:
+                    ax.axis([pos, pos+step, yMin/zoom, yMax/zoom])
+                else:
+                    ax[n].axis([pos, pos+step, yMin/zoom, yMax/zoom])
             fig.canvas.draw_idle()
 
         spos.on_changed(update)

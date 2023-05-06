@@ -6,7 +6,7 @@ from Rulkov import Rulkov
 # %% RULKOV
 rulkov = Rulkov()
 # %% Initial Simulation
-rulkov.RulkovSimple(alpha=4.9, beta=0.001, sigma=0.001, x0=-2, y0=-2.9, N=50000)
+rulkov.RulkovSimple(alpha=4, beta=0.001, sigma=0.001, x0=-2, y0=-2.9, N=600)
 # %% Slider Parameters
 alphaPar = (rulkov.alpha, 0, 8, "alpha", rulkov.ChangeParameterRulkovSimple)
 betaPar = (rulkov.beta, 0, 0.002, "beta", rulkov.ChangeParameterRulkovSimple)
@@ -18,8 +18,9 @@ pars = (alphaPar, betaPar, sigmaPar, x0Par, y0Par)
 plotting = Plotting()
 # %% Burst vs N
 datas=rulkov.SpikePlots()
-plotting.SliderPlot(datas=[datas[1]], step=1000, zoom=0.8, extraSliders=pars)
+scale=1
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
 # %% Phase Space
-# plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=50000)
+# plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
 # %% Map
 # plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)

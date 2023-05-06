@@ -10,6 +10,8 @@ class Rulkov:
         self.x0 = 0
         self.y0 = 0
         self.N = 0
+        self.noiseDev = 0
+        self.threshold = 0.5
 
     def RulkovSimple(self, alpha=None, beta=None, sigma=None, x0=None, y0=None, N=None):
         if alpha != None:
@@ -55,7 +57,7 @@ class Rulkov:
                 self.RulkovSimple(y0=value)
             case "N":
                 self.RulkovSimple(N=value)
-        return ((self.x, self.y), self.N)
+        return self.SpikePlots()
 
     def RulkovCoupled(self, alpha=None, sigma=None, cells=None, W=None, x0=None, y0=None, N=None):
         if alpha != None:
@@ -120,3 +122,40 @@ class Rulkov:
             plots.append(([i for i in range(self.N)], self.x[cell]))
             plots.append(([i for i in range(self.N)], self.y[cell]))
         return plots
+    
+    def CountSpikes(self, noiseDev=None, threshold=None):
+        if noiseDev != None:
+            self.noiseDev = noiseDev
+        if threshold != None:
+            self.threshold = threshold
+        import numpy as np
+        noise = np.random.normal(0,self.noiseDev,self.N)
+        data = self.SpikePlots()
+        iSignal = data[0][0]
+        signal = data[0][1]
+        iNoisedSignal = iSignal
+        noisedSignal = [signal[n] + noise[n] for n in range(self.N)]
+        iDiffSignal = [iNoisedSignal[n] + (iNoisedSignal[n + 1] - iNoisedSignal[n])/2 for n in range(len(iNoisedSignal) - 1)]
+        diffSignal = [noisedSignal[n + 1] - noisedSignal[n] for n in range(len(iDiffSignal))]
+        iDiffDiffSignal = [iDiffSignal[n] + (iDiffSignal[n + 1] - iDiffSignal[n])/2 for n in range(len(iDiffSignal) - 1)]
+        diffDiffSignal = [diffSignal[n + 1] - diffSignal[n] for n in range(len(iDiffDiffSignal))]
+        iTimedSignal=[]
+        direction=0
+        for n in range(len(iDiffDiffSignal)):
+            if direction==0 and abs(diffDiffSignal[n]) > self.threshold:
+                direction=diffDiffSignal[n]/abs(diffDiffSignal[n])
+            else:
+                if direction!=0 and diffDiffSignal[n] > self.threshold*direction:
+                    iTimedSignal.append(iDiffDiffSignal[n] - iDiffDiffSignal[0])
+                    direction=0
+
+        return [iTimedSignal, [max(signal) for n in range(len(iTimedSignal))], "o"]
+    
+    def ChangeParameterCountSpikes(self, par, value):
+        ret = []
+        match par:
+            case "noiseDev":
+                ret = self.CountSpikes(noiseDev=value)
+            case "threshold":
+                ret = self.CountSpikes(threshold=value)
+        return [self.SpikePlots()[0], ret]
