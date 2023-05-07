@@ -130,11 +130,13 @@ class Rulkov:
             self.threshold = threshold
         import numpy as np
         noise = np.random.normal(0,self.noiseDev,self.N)
+        self.RulkovSimple()
         data = self.SpikePlots()
         iSignal = data[0][0]
         signal = data[0][1]
         iNoisedSignal = iSignal
         noisedSignal = [signal[n] + noise[n] for n in range(self.N)]
+        self.x[0] = noisedSignal
         iDiffSignal = [iNoisedSignal[n] + (iNoisedSignal[n + 1] - iNoisedSignal[n])/2 for n in range(len(iNoisedSignal) - 1)]
         diffSignal = [noisedSignal[n + 1] - noisedSignal[n] for n in range(len(iDiffSignal))]
         iDiffDiffSignal = [iDiffSignal[n] + (iDiffSignal[n + 1] - iDiffSignal[n])/2 for n in range(len(iDiffSignal) - 1)]
