@@ -119,8 +119,8 @@ class Rulkov:
     def SpikePlots(self):       
         plots = []
         for cell in range(self.cells):
-            plots.append(([i for i in range(self.N)], self.x[cell]))
-            plots.append(([i for i in range(self.N)], self.y[cell]))
+            plots.append([[i for i in range(self.N)], self.x[cell]])
+            plots.append([[i for i in range(self.N)], self.y[cell]])
         return plots
     
     def CountSpikes(self, noiseDev=None, threshold=None):
@@ -128,25 +128,46 @@ class Rulkov:
             self.noiseDev = noiseDev
         if threshold != None:
             self.threshold = threshold
-        import numpy as np
-        noise = np.random.normal(0,self.noiseDev,self.N)
+
         self.RulkovSimple()
-        data = self.SpikePlots()
-        iSignal = data[0][0]
-        signal = data[0][1]
-        iNoisedSignal = iSignal
-        noisedSignal = [signal[n] + noise[n] for n in range(self.N)]
+
+        (iSignal, signal) = self.SpikePlots()[0]
+
+        (iNoisedSignal, noisedSignal) = self.AddNoiseToSignal(iSignal, signal, self.noiseDev)
+
         self.x[0] = noisedSignal
-        iDiffSignal = [iNoisedSignal[n] + (iNoisedSignal[n + 1] - iNoisedSignal[n])/2 for n in range(len(iNoisedSignal) - 1)]
-        diffSignal = [noisedSignal[n + 1] - noisedSignal[n] for n in range(len(iDiffSignal))]
+
+        return self.DetectSpikes(iNoisedSignal, noisedSignal, self.threshold)
+    
+    def SpikesIntervals(self):
+        (timedData, _) = self.CountSpikes()
+        intervals = [timedData[n + 1] - timedData[n] for n in range(len(timedData) - 1)]
+        return intervals
+    
+    def DetectSpikes(self, index, signal, threshold):
+        (iDiffSignal, diffSignal) = self.DifferenciateSignal(index, signal)
         iTimedSignal=[]
         for n in range(len(iDiffSignal) - 1):
             if diffSignal[n]>0 and diffSignal[n+1]<0:
-                if noisedSignal[n+1]>self.threshold:
+                if signal[n+1]>threshold:
                     iTimedSignal.append(iDiffSignal[n] + iDiffSignal[0])
-        timedData = [iTimedSignal, [max(signal) for _ in range(len(iTimedSignal))]]
-        return [[iTimedSignal, [max(signal) for _ in range(len(iTimedSignal))]]]
+        maxSignalVal = max(signal)
+        timedData = [iTimedSignal, [maxSignalVal for _ in range(len(iTimedSignal))]]
+        return timedData
     
+    def DifferenciateSignal(self, index, signal):
+        iDiffSignal = [index[n] + (index[n + 1] - index[n])/2 for n in range(len(index) - 1)]
+        diffSignal = [signal[n + 1] - signal[n] for n in range(len(iDiffSignal))]
+        return [iDiffSignal, diffSignal]
+
+    def AddNoiseToSignal(self, index, signal, noiseDev):
+        import numpy as np
+        N = len(signal)
+        noise = np.random.normal(0, noiseDev, N)
+        iNoisedSignal = index
+        noisedSignal = [signal[n] + noise[n] for n in range(N)]
+        return [iNoisedSignal, noisedSignal]
+
     def ChangeParameterCountSpikes(self, par, value):
         ret = []
         match par:

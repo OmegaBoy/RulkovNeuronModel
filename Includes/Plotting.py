@@ -203,3 +203,7 @@ class Plotting:
         spos.on_changed(updatePos)
 
         self.plt.show()
+
+    def Histogram(self, data, bins=10, log=False):
+        self.plt.hist(data, bins=bins, log=log)
+        self.plt.show()
