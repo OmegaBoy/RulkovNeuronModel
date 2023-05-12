@@ -13,5 +13,10 @@ plotting = Plotting()
 noiseDevPar = (rulkov.noiseDev, 0, 1, "noiseDev", rulkov.ChangeParameterCountSpikes)
 tresholdPar = (rulkov.threshold, 0, 3, "threshold", rulkov.ChangeParameterCountSpikes)
 pars = (noiseDevPar, tresholdPar)
+# %% Data
+datas=[]
+datas.append(rulkov.SpikePlots()[0])
+datas.append(rulkov.CountSpikes(noiseDev=0, threshold=0.5))
+# %% Plotting
 scale=100
-plotting.SliderPlot(datas=[rulkov.SpikePlots()[0], rulkov.CountSpikes(noiseDev=0, threshold=0.5)], step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)

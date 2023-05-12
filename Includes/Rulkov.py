@@ -139,19 +139,13 @@ class Rulkov:
         self.x[0] = noisedSignal
         iDiffSignal = [iNoisedSignal[n] + (iNoisedSignal[n + 1] - iNoisedSignal[n])/2 for n in range(len(iNoisedSignal) - 1)]
         diffSignal = [noisedSignal[n + 1] - noisedSignal[n] for n in range(len(iDiffSignal))]
-        iDiffDiffSignal = [iDiffSignal[n] + (iDiffSignal[n + 1] - iDiffSignal[n])/2 for n in range(len(iDiffSignal) - 1)]
-        diffDiffSignal = [diffSignal[n + 1] - diffSignal[n] for n in range(len(iDiffDiffSignal))]
         iTimedSignal=[]
-        direction=0
-        for n in range(len(iDiffDiffSignal)):
-            if direction==0 and abs(diffDiffSignal[n]) > self.threshold:
-                direction=diffDiffSignal[n]/abs(diffDiffSignal[n])
-            else:
-                if direction!=0 and diffDiffSignal[n] > self.threshold*direction:
-                    iTimedSignal.append(iDiffDiffSignal[n] - iDiffDiffSignal[0])
-                    direction=0
-
-        return [iTimedSignal, [max(signal) for n in range(len(iTimedSignal))], "o"]
+        for n in range(len(iDiffSignal) - 1):
+            if diffSignal[n]>0 and diffSignal[n+1]<0:
+                if noisedSignal[n+1]>self.threshold:
+                    iTimedSignal.append(iDiffSignal[n] + iDiffSignal[0])
+        timedData = [iTimedSignal, [max(signal) for _ in range(len(iTimedSignal))]]
+        return [[iTimedSignal, [max(signal) for _ in range(len(iTimedSignal))]]]
     
     def ChangeParameterCountSpikes(self, par, value):
         ret = []
