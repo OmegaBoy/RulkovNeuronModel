@@ -42,106 +42,9 @@ class Plotting:
         self.plt.xlim(xMin/zoom, step)
         self.plt.ylim(yMin/zoom, yMax/zoom)
 
-        axpos = self.plt.axes([0.2, bottom - 0.1, 0.65, 0.03],
-                              facecolor='lightgoldenrodyellow')
+        axpos = self.plt.axes([0.2, bottom - 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
 
         spos = self.slider(axpos, 'Pos', 0, (xMax - xMin)-step, orientation='horizontal')
-
-        parLeft = 0.1
-        parRight = 0.5
-        parsWidth = 0.3
-        parsHeight = 0.03
-        parsSeparation = 0.1
-
-        iPar = 0
-        if len(extraSliders) > iPar:
-            extraSlider0 = extraSliders[iPar]
-            ax0 = self.plt.axes([parLeft, bottom - parsSeparation * (iPar + 2),
-                                parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            s0 = self.slider(ax0, extraSlider0[3], extraSlider0[1], extraSlider0[2], valinit=extraSlider0[0], valstep=(
-                extraSlider0[2] - extraSlider0[1])/100, orientation='horizontal')
-
-            def updatePar0(val):
-                datas = extraSlider0[4](extraSlider0[3], val)
-                for d in range(len(datas[0])):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
-
-            s0.on_changed(updatePar0)
-
-        iPar = 1
-        if len(extraSliders) > iPar:
-            extraSlider1 = extraSliders[iPar]
-            ax1 = self.plt.axes([parLeft, bottom - parsSeparation * (iPar + 2),
-                                parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            s1 = self.slider(ax1, extraSlider1[3], extraSlider1[1], extraSlider1[2], valinit=extraSlider1[0], valstep=(
-                extraSlider1[2] - extraSlider1[1])/100, orientation='horizontal')
-
-            def updatePar1(val):
-                datas = extraSlider1[4](extraSlider1[3], val)
-                for d in range(len(datas)):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
-
-            s1.on_changed(updatePar1)
-
-        iPar = 2
-        if len(extraSliders) > iPar:
-            extraSlider2 = extraSliders[iPar]
-            ax2 = self.plt.axes([parLeft, bottom - parsSeparation * (iPar + 2),
-                                parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            s2 = self.slider(ax2, extraSlider2[3], extraSlider2[1], extraSlider2[2], valinit=extraSlider2[0], valstep=(
-                extraSlider2[2] - extraSlider2[1])/100, orientation='horizontal')
-
-            def updatePar2(val):
-                datas = extraSlider2[4](extraSlider2[3], val)
-                for d in range(len(datas)):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
-
-            s2.on_changed(updatePar2)
-
-        iPar = 3
-        if len(extraSliders) > iPar:
-            extraSlider3 = extraSliders[iPar]
-            ax3 = self.plt.axes([parRight, bottom - parsSeparation * (iPar - 3 + 2),
-                                parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            s3 = self.slider(ax3, extraSlider3[3], extraSlider3[1], extraSlider3[2], valinit=extraSlider3[0], valstep=(
-                extraSlider3[2] - extraSlider3[1])/100, orientation='horizontal')
-
-            def updatePar3(val):
-                datas = extraSlider3[4](extraSlider3[3], val)
-                for d in range(len(datas)):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
-
-            s3.on_changed(updatePar3)
-
-        iPar = 4
-        if len(extraSliders) > iPar:
-            extraSlider4 = extraSliders[iPar]
-            ax4 = self.plt.axes([parRight, bottom - parsSeparation * (iPar - 3 + 2),
-                                parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            s4 = self.slider(ax4, extraSlider4[3], extraSlider4[1], extraSlider4[2], valinit=extraSlider4[0], valstep=(
-                extraSlider4[2] - extraSlider4[1])/100, orientation='horizontal')
-
-            def updatePar4(val):
-                datas = extraSlider4[4](extraSlider4[3], val)
-                for d in range(len(datas)):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
-
-            s4.on_changed(updatePar4)
-
-        iPar = 5
-        if len(extraSliders) > iPar:
-            extraSlider5 = extraSliders[iPar]
-            ax5 = self.plt.axes([parRight, bottom - parsSeparation * (iPar - 3 + 2),
-                                parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            s5 = self.slider(ax5, extraSlider5[3], extraSlider5[1], extraSlider5[2], valinit=extraSlider5[0], valstep=(
-                extraSlider5[2] - extraSlider5[1])/100, orientation='horizontal')
-
-            def updatePar5(val):
-                datas = extraSlider5[4](extraSlider5[3], val)
-                for d in range(len(datas)):
-                    linePlots[d].set_data(datas[d][0], datas[d][1])
-
-            s5.on_changed(updatePar5)
 
         def update(val):
             pos = val
@@ -152,8 +55,45 @@ class Plotting:
                     ax[n].axis([pos, pos+step, yMin/zoom, yMax/zoom])
             fig.canvas.draw_idle()
 
-        spos.on_changed(update)
+        spos.on_changed(lambda val: update(val))
 
+        parsWidth = 0.65
+        parsHeight = 0.03
+        frac=1000
+
+        def updatePar(val, iPar):
+            extraSlider = extraSliders[iPar]
+            datas = extraSlider.ChangeFunction(extraSlider.ParName, val)
+            _, yMin, _, yMax = self.CalculateBoundaries(datas)
+            ax.set_ylim(yMin/zoom, yMax/zoom)
+            for d in range(len(datas)):
+                linePlots[d].set_data(datas[d][0], datas[d][1])
+
+        for iPar in range(len(extraSliders)):
+            extraSlider = extraSliders[iPar]
+            eax = self.plt.axes([0.2, bottom - 0.1 - parsHeight - parsHeight * iPar, parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
+            extraSlider.Slider = self.slider(eax, extraSlider.ParName, extraSlider.MinValue, extraSlider.MaxValue, valinit=extraSlider.InitialValue, valstep=(extraSlider.MaxValue - extraSlider.MinValue)/frac, orientation='horizontal')
+            match iPar:
+                case 0:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 0))
+                case 1:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 1))
+                case 2:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 2))
+                case 3:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 3))
+                case 4:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 4))
+                case 5:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 5))
+                case 6:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 6))
+                case 7:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 7))
+                case 8:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 8))
+                case 9:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 9))
         self.plt.show()
 
     def CalculateBoundaries(self, datas):
@@ -162,18 +102,19 @@ class Plotting:
         xMax = 0
         yMax = 0
         for data in datas:
-            xnMin = min(data[0])
-            xnMax = max(data[0])
-            if xnMin < xMin:
-                xMin = xnMin
-            if xnMax > xMax:
-                xMax = xnMax
-            ynMin = min(data[1])
-            ynMax = max(data[1])
-            if ynMin < yMin:
-                yMin = ynMin
-            if ynMax > yMax:
-                yMax = ynMax
+            if len(data[0])>0:
+                xnMin = min(data[0])
+                xnMax = max(data[0])
+                if xnMin < xMin:
+                    xMin = xnMin
+                if xnMax > xMax:
+                    xMax = xnMax
+                ynMin = min(data[1])
+                ynMax = max(data[1])
+                if ynMin < yMin:
+                    yMin = ynMin
+                if ynMax > yMax:
+                    yMax = ynMax
         return xMin,yMin,xMax,yMax
 
     def PlotPhaseSpace(self, x, y, N, step):
@@ -207,3 +148,12 @@ class Plotting:
     def Histogram(self, data, bins=10, log=False):
         self.plt.hist(data, bins=bins, log=log)
         self.plt.show()
+
+    class SliderPar:
+        def __init__(self, initialValue = None, minValue = None, maxValue = None, parName = None, changeFunction = None):
+            self.InitialValue = initialValue
+            self.MinValue = minValue
+            self.MaxValue = maxValue
+            self.ParName = parName
+            self.ChangeFunction = changeFunction
+            self.Slider = None
