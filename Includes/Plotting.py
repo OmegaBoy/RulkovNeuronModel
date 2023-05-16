@@ -145,8 +145,11 @@ class Plotting:
 
         self.plt.show()
 
-    def Histogram(self, data, bins=10, log=False):
-        self.plt.hist(data, bins=bins, log=log)
+    def Histogram(self, data, bins=10, ylog=False, xlog=False):
+        self.plt.hist(data, bins=bins, log=ylog)
+        
+        if xlog != None:
+            self.plt.xscale('log')
         self.plt.show()
 
     class SliderPar:

@@ -1,7 +1,7 @@
 class SpikeAnalyzer:
-    def SpikesIntervals(timedData):
-        intervals = [timedData[n + 1] - timedData[n]
-                     for n in range(len(timedData) - 1)]
+    def SpikesIntervals(iTimedData):
+        intervals = [iTimedData[n + 1] - iTimedData[n]
+                     for n in range(len(iTimedData) - 1)]
         return intervals
 
     def DetectSpikes(index, signal, threshold, refractoryTime=0):
