@@ -16,7 +16,7 @@ class Plotting:
             self.plt.plot(datas[i][0], datas[i][1], c=color)
         self.plt.show()
 
-    def SliderPlot(self, datas, step, zoom, together=False, extraSliders=[]):
+    def SliderPlot(self, datas, step, zoom, together=True, extraSliders=[]):
         if together:
             fig, ax = self.plt.subplots()
         else:
@@ -48,10 +48,10 @@ class Plotting:
 
         def update(val):
             pos = val
-            for n in range(len(datas)):
-                if together:
-                    ax.axis([pos, pos+step, yMin/zoom, yMax/zoom])
-                else:
+            if together:
+                ax.axis([pos, pos+step, yMin/zoom, yMax/zoom])
+            else:
+                for n in range(len(datas)):
                     ax[n].axis([pos, pos+step, yMin/zoom, yMax/zoom])
             fig.canvas.draw_idle()
 
@@ -146,10 +146,73 @@ class Plotting:
         self.plt.show()
 
     def Histogram(self, data, bins=10, ylog=False, xlog=False):
-        self.plt.hist(data, bins=bins, log=ylog)
+        self.plt.hist(data, bins=bins)
+
+        if ylog != None:
+            self.plt.yscale('log')
         
         if xlog != None:
             self.plt.xscale('log')
+        
+        self.plt.show()
+
+    def HistogramTest(self, data, bins=10, ylog=False, xlog=False, extraSliders = []):
+        _, ax = self.plt.subplots()
+        bottom = 0.15
+        if len(extraSliders) > 0:
+            bottom = 0.5
+        self.plt.subplots_adjust(bottom=bottom)
+
+        if ylog != None:
+            self.plt.yscale('log')
+        
+        if xlog != None:
+            self.plt.xscale('log')
+
+        hist, bins = self.np.histogram(data, bins=bins)
+        b = self.plt.bar(bins[:-1], hist, width=.3)
+
+        self.plt.axis()
+
+        parsWidth = 0.65
+        parsHeight = 0.03
+        frac=1000
+
+        def updatePar(val, iPar):
+            extraSlider = extraSliders[iPar]
+            data = extraSlider.ChangeFunction(extraSlider.ParName, val)
+            self.np.histogram(data, bins=bins)
+            [bar.set_height(hist[i]) for i, bar in enumerate(b)]
+            [bar.set_x(bins[i]) for i, bar in enumerate(b)]
+            ax.relim()
+            ax.autoscale_view()
+            self.plt.draw()
+
+        for iPar in range(len(extraSliders)):
+            extraSlider = extraSliders[iPar]
+            eax = self.plt.axes([0.2, bottom - 0.1 - parsHeight - parsHeight * iPar, parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
+            extraSlider.Slider = self.slider(eax, extraSlider.ParName, extraSlider.MinValue, extraSlider.MaxValue, valinit=extraSlider.InitialValue, valstep=(extraSlider.MaxValue - extraSlider.MinValue)/frac, orientation='horizontal')
+            match iPar:
+                case 0:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 0))
+                case 1:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 1))
+                case 2:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 2))
+                case 3:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 3))
+                case 4:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 4))
+                case 5:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 5))
+                case 6:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 6))
+                case 7:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 7))
+                case 8:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 8))
+                case 9:
+                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 9))
         self.plt.show()
 
     class SliderPar:
