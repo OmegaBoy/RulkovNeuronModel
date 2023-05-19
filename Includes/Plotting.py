@@ -145,18 +145,7 @@ class Plotting:
 
         self.plt.show()
 
-    def Histogram(self, data, bins=10, ylog=False, xlog=False):
-        self.plt.hist(data, bins=bins)
-
-        if ylog != None:
-            self.plt.yscale('log')
-        
-        if xlog != None:
-            self.plt.xscale('log')
-        
-        self.plt.show()
-
-    def HistogramTest(self, data, bins=10, ylog=False, xlog=False, extraSliders = []):
+    def Histogram(self, data, bins=10, ylog=False, xlog=False, extraSliders = []):
         _, ax = self.plt.subplots()
         bottom = 0.15
         if len(extraSliders) > 0:
@@ -213,6 +202,23 @@ class Plotting:
                     extraSlider.Slider.on_changed(lambda val: updatePar(val, 8))
                 case 9:
                     extraSlider.Slider.on_changed(lambda val: updatePar(val, 9))
+        self.plt.show()
+        return hist
+
+    def PowerSeries(self, data):
+        from numpy.fft import fft
+
+        # sampling rate
+        sr = 1
+
+        X = fft(data)
+        N = len(X)
+        n = self.np.arange(N)
+        T = N/sr
+        freq = n/T 
+
+        self.plt.stem(freq, self.np.abs(X), 'b', markerfmt=" ", basefmt="-b")
+
         self.plt.show()
 
     class SliderPar:

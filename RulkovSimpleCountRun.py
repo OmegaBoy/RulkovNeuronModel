@@ -64,11 +64,9 @@ pars = [noiseDev, threshold, refractoryTime]
 sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal)
 # %% Plotting
 scale = 400
-bins = 200
+bins = 400
 # plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 # %% Histogram
-plotting.Histogram(SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]), bins=bins, ylog=True, xlog=True)
-
-# test = Plotting.SliderPar(0, 0, 8, "test", sliderFunc.changeParHist)
-# parsHist = [test]
-# plotting.HistogramTest(SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]), bins=bins, ylog=True, xlog=True, extraSliders=parsHist)
+histData = plotting.Histogram(SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]), bins=bins, ylog=True, xlog=True)
+# %% Power series
+# plotting.PowerSeries(sliderFunc.datas[0][0])
