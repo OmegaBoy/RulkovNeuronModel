@@ -206,18 +206,33 @@ class Plotting:
         return hist
 
     def PowerSeries(self, data):
-        from numpy.fft import fft
+        data = data - self.np.mean(data)
+        sp = self.np.fft.fft(data)
+        
+        self.plt.plot(self.np.abs(sp))
+        self.plt.show()
 
-        # sampling rate
-        sr = 1
+    def CalculateHistogramSlope(self, signal, bins = 10, slopeIndexes=[]):
+        hist, bins_edges = self.np.histogram(signal, bins)
 
-        X = fft(data)
-        N = len(X)
-        n = self.np.arange(N)
-        T = N/sr
-        freq = n/T 
+        y = []
+        x = []
+        for n in range(bins):
+            if hist[n] != 0:
+                x.append((bins_edges[n + 1] + bins_edges[n])/2)
+                y.append(hist[n])
 
-        self.plt.stem(freq, self.np.abs(X), 'b', markerfmt=" ", basefmt="-b")
+        lx = self.np.log(x)
+        ly = self.np.log(y)
+        self.plt.plot(lx,ly)
+
+        from scipy.stats import linregress
+        for si in slopeIndexes:
+            lxv = lx[si[0]:si[1]]
+            lyv = ly[si[0]:si[1]]
+            r = linregress(lxv, lyv)
+            self.plt.plot(lxv, [vx*r.slope + r.intercept for vx in lxv], marker="o", markersize=5)
+            self.plt.text(lxv[0], lyv[0], f'y={r.slope:.2f}*x+{r.intercept:.2f}')
 
         self.plt.show()
 
