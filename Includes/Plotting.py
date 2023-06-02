@@ -212,7 +212,7 @@ class Plotting:
         self.plt.plot(self.np.abs(sp))
         self.plt.show()
 
-    def CalculateHistogramSlope(self, signal, bins = 10, slopeIndexes=[]):
+    def PlotHistogramSlopes(self, signal, bins = 10, slopeIndexes=[]):
         hist, bins_edges = self.np.histogram(signal, bins)
 
         y = []

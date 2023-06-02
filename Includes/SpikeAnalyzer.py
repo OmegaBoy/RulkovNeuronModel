@@ -34,7 +34,7 @@ class SpikeAnalyzer:
         noisedSignal = [signal[n] + noise[n] for n in range(N)]
         return [iNoisedSignal, noisedSignal]
     
-    def CalculateHistogramSlope(signal, bins = 10, slopeIndexes=[]):
+    def CalculateHistogramSlopes(signal, bins = 10, slopeIndexes=[], length = 4):
         import numpy as np
         hist, bins_edges = np.histogram(signal, bins)
 
@@ -45,17 +45,42 @@ class SpikeAnalyzer:
                 x.append((bins_edges[n + 1] + bins_edges[n])/2)
                 y.append(hist[n])
 
-        import matplotlib.pyplot as plt
         lx = np.log(x)
         ly = np.log(y)
-        plt.plot(lx,ly)
 
+        slopes = []
         from scipy.stats import linregress
-        for si in slopeIndexes:
-            lxv = lx[si[0]:si[1]]
-            lyv = ly[si[0]:si[1]]
+        # for si in slopeIndexes:
+        #     lxv = lx[si[0]:si[1]]
+        #     lyv = ly[si[0]:si[1]]
+        #     r = linregress(lxv, lyv)
+        #     slopes.append(r)
+
+        for d in range(len(lx) - length):
+            lxv = lx[d:d+length]
+            lyv = ly[d:d+length]
             r = linregress(lxv, lyv)
-            plt.plot(lxv, [vx*r.slope + r.intercept for vx in lxv], marker="o", markersize=5)
-            plt.text(lxv[0], lyv[0], f'y={r.slope:.2f}*x+{r.intercept:.2f}')
+            slopes.append({
+                "Slope": r,
+                "x": lxv,
+                "y": lyv
+            })
+
+        import matplotlib.pyplot as plt
+        
+        plt.plot(lx, ly)
+        plt.plot()
+
+        ds = SpikeAnalyzer.DifferenciateSignal(lx, ly)
+
+        plt.plot(ds[0], ds[1])
 
         plt.show()
+
+        return {
+            "Slopes": slopes,
+            "Data": {
+                "x": lx,
+                "y": ly
+            }
+        }

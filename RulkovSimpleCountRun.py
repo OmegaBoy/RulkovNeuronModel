@@ -68,6 +68,9 @@ bins = 80
 # plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 # %% Histogram
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0])
-plotting.CalculateHistogramSlope(intervals, bins, [[0, 8],[15, 32]])
+
+slopeIndexes = [[0, 8],[15, 32]]
+# slopeIndexes = []
+plotting.PlotHistogramSlopes(intervals, bins, slopeIndexes)
 # %% Power series
 # plotting.PowerSeries(sliderFunc.datas[0][1])
