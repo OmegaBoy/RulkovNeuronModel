@@ -8,6 +8,33 @@ from Utilities import Utilities
 # %% RULKOV
 rulkov = RulkovSimple(alpha=4.8, beta=0.001, sigma=0.001, x0=-2, y0=-2.9, N=100000)
 plotting = Plotting()
+
+# %% Slider Parameters
+def changePar(parName, parValue):
+    setattr(rulkov, parName, parValue)
+    rulkov.Simulate()
+    return getData()
+
+alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
+betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
+sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 0.001, "sigma", changePar)
+x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
+y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
+
+pars = [alphaPar, betaPar, sigmaPar, x0Par, y0Par]
+# %% PLOTTING
+plotting = Plotting()
+# %% Burst vs N
+def getData():
+    datas=[]
+    datas.append([[n for n in range(rulkov.N)], rulkov.x])
+    datas.append([[n for n in range(rulkov.N)], rulkov.y])
+    return datas
+
+datas = getData()
+scale=100
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
+
 class SliderFunctions:
     def __init__(self) -> None:
         pass
