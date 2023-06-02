@@ -65,7 +65,7 @@ sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal)
 # %% Plotting
 scale = 400
 bins = 80
-# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
+plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 # %% Histogram
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0])
 
