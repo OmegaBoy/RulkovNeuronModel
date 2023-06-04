@@ -25,6 +25,13 @@ class SpikeAnalyzer:
         diffSignal = [signal[n + 1] - signal[n]
                       for n in range(len(iDiffSignal))]
         return [iDiffSignal, diffSignal]
+    
+    def CalculateSlopeSignal(index, signal):
+        iSlopeSignal = [
+            index[n] + (index[n + 1] - index[n])/2 for n in range(len(index) - 1)]
+        slopeSignal = [(signal[n + 1] - signal[n])/(index[n + 1] - index[n])
+                      for n in range(len(iSlopeSignal))]
+        return [iSlopeSignal, slopeSignal]
 
     def AddNoiseToSignal(index, signal, noiseDev):
         import numpy as np
@@ -34,7 +41,7 @@ class SpikeAnalyzer:
         noisedSignal = [signal[n] + noise[n] for n in range(N)]
         return [iNoisedSignal, noisedSignal]
     
-    def CalculateHistogramSlopes(signal, bins = 10, slopeIndexes=[], length = 4):
+    def CalculateHistogramSlopes(signal, bins = 10, slopeIndexes=[], threshold = 1, minSequenceSize = 2):
         import numpy as np
         hist, bins_edges = np.histogram(signal, bins)
 
@@ -48,34 +55,34 @@ class SpikeAnalyzer:
         lx = np.log(x)
         ly = np.log(y)
 
-        slopes = []
-        from scipy.stats import linregress
-        # for si in slopeIndexes:
-        #     lxv = lx[si[0]:si[1]]
-        #     lyv = ly[si[0]:si[1]]
-        #     r = linregress(lxv, lyv)
-        #     slopes.append(r)
+        import matplotlib.pyplot as plt
+        ds = SpikeAnalyzer.CalculateSlopeSignal(lx, ly)
 
-        for d in range(len(lx) - length):
-            lxv = lx[d:d+length]
-            lyv = ly[d:d+length]
+        currentIndexes = []
+        for n in range(len(ds[0])):
+            if ds[1][n] < threshold:
+                if len(currentIndexes) == 0:
+                    currentIndexes.append(n)
+            else:
+                currentIndexes.append(n)
+                if len(currentIndexes)==2:
+                    if currentIndexes[1] - currentIndexes[0] > minSequenceSize:
+                        slopeIndexes.append(currentIndexes)
+                    currentIndexes=[]
+            if len(slopeIndexes)==2:
+                break
+        
+        from scipy.stats import linregress
+        slopes = []
+        for si in slopeIndexes:
+            lxv = lx[si[0]:si[1]]
+            lyv = ly[si[0]:si[1]]
             r = linregress(lxv, lyv)
             slopes.append({
                 "Slope": r,
                 "x": lxv,
                 "y": lyv
             })
-
-        import matplotlib.pyplot as plt
-        
-        plt.plot(lx, ly)
-        plt.plot()
-
-        ds = SpikeAnalyzer.DifferenciateSignal(lx, ly)
-
-        plt.plot(ds[0], ds[1])
-
-        plt.show()
 
         return {
             "Slopes": slopes,
