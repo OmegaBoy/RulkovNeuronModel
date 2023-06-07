@@ -9,11 +9,20 @@ class Plotting:
         self.plt = plt
         self.slider = Slider
 
-    def PlotMultiple(self, datas):
-        for i in range(len(datas)):
-            color = (self.np.random.random(),
-                     self.np.random.random(), self.np.random.random())
-            self.plt.plot(datas[i][0], datas[i][1], c=color)
+    def PlotMultiple(self, datas, together = True, logx = False, logy = False):
+        if together:
+            fig, ax = self.plt.subplots()
+            for i in range(len(datas)):
+                color = (self.np.random.random(), self.np.random.random(), self.np.random.random())
+                self.plt.plot(datas[i][0], datas[i][1], c=color)
+                if logx == True: self.plt.xscale('log')
+                if logy == True: self.plt.yscale('log')
+        else:
+            fig, ax = self.plt.subplots(len(datas))
+            for i in range(len(datas)):
+                l, = ax[i].plot(datas[i][0], datas[i][1])
+                if logx == True: ax[i].set_xscale('log')
+                if logy == True: ax[i].set_yscale('log')
         self.plt.show()
 
     def SliderPlot(self, datas, step, zoom, together=True, extraSliders=[]):
@@ -205,12 +214,26 @@ class Plotting:
         self.plt.show()
         return hist
 
-    def PowerSeries(self, data):
+    def PowerSeries(self, data, logx=False, logy=False):
         data = data - self.np.mean(data)
-        sp = self.np.fft.fft(data)
         
-        self.plt.plot(self.np.abs(sp))
-        self.plt.show()
+        ps = self.np.abs(self.np.fft.fft(data))**2
+
+        datas = []
+        index = [i for i in range(len(ps[1:int((len(data)/2)-1)]))]
+        data = ps[1:int((len(data)/2)-1)]
+        datas.append([index, data])
+        windowsSizes = [30, 90, 150]
+        for ws in windowsSizes:
+            data = self.moving_average(data, ws)
+            datas.append([index, data])
+
+        self.PlotMultiple(datas, together=True, logx=logx, logy=logy)
+
+    def moving_average(self, data, window_size):
+        window = self.np.ones(window_size) / window_size
+        smoothed_data = self.np.convolve(data, window, mode='same')
+        return smoothed_data
 
     def PlotHistogramSlopes(self, signal, bins = 10, slopeIndexes=[]):
         hist, bins_edges = self.np.histogram(signal, bins)

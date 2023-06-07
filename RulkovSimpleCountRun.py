@@ -33,7 +33,7 @@ def getData():
 
 datas = getData()
 scale=100
-plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
+# plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
 
 class SliderFunctions:
     def __init__(self) -> None:
@@ -92,17 +92,20 @@ sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal)
 # %% Plotting
 scale = 400
 bins = 80
-plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
+# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 # %% Histogram
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0])
+# plotting.PlotMultiple([[sliderFunc.datas[1][0], sliderFunc.datas[1][1]], [[i for i in range(len(intervals))] ,intervals]], together=False)
 
-slopeIndexes = []
+# %%
+# slopeIndexes = []
 # slopeIndexes = [[0, 8],[15, 32]]
-slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, slopeIndexes=slopeIndexes, threshold=1, minSequenceSize=2)
-datas=[[slopesData["Data"]["x"], slopesData["Data"]["y"]]]
-for slope in slopesData["Slopes"]:
-    datas.append([slope["x"], [vx*slope["Slope"].slope + slope["Slope"].intercept for vx in slope["x"]]])
-plotting.PlotMultiple(datas)
+# slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, slopeIndexes=slopeIndexes, threshold=1, minSequenceSize=2)
+# datas=[[slopesData["Data"]["x"], slopesData["Data"]["y"]]]
+# for slope in slopesData["Slopes"]:
+#     datas.append([slope["x"], [vx*slope["Slope"].slope + slope["Slope"].intercept for vx in slope["x"]]])
+# plotting.PlotMultiple(datas)
 # plotting.PlotHistogramSlopes(intervals, bins, slopeIndexes)
+
 # %% Power series
-# plotting.PowerSeries(sliderFunc.datas[0][1])
+plotting.PowerSeries(intervals, True, True)

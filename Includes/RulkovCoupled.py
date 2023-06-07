@@ -3,12 +3,12 @@ class RulkovCoupled:
         from Utilities import Utilities
 
         self.alpha = Utilities.ChangeParameter(alpha, self.alpha, "alpha")
-        self.sigma = Utilities.ChangeParameter(sigma, self.sigma, "sigma")
-        self.cells = Utilities.ChangeParameter(cells, self.cells, "cells")
-        self.W = Utilities.ChangeParameter(W, self.W, "W")
+        self.sigma = Utilities.ChangeParameter(sigma, self.sigma, "sigma") # 
+        self.cells = Utilities.ChangeParameter(cells, self.cells, "cells") # Nro de celulas
+        self.W = Utilities.ChangeParameter(W, self.W, "W") # Pesos neuronales
         self.x0 = Utilities.ChangeParameter(x0, self.x0, "x0")
         self.y0 = Utilities.ChangeParameter(y0, self.y0, "y0")
-        self.N = Utilities.ChangeParameter(N, self.N, "N")
+        self.N = Utilities.ChangeParameter(N, self.N, "N") # Cantidad de iteraciones 
 
         self.Simulate()
 
@@ -31,10 +31,15 @@ class RulkovCoupled:
         for n in self.N:
             for c in self.C:
                 for i in self.I:
-                    sigma_n = self.sigma * self.W[i][c] * self.x[i][n-1]
+                    #sigma_n = self.sigma * self.W[i][c] * self.x[i][n-1]
+
 
                     self.x[c][n] = (self.alpha/(1+(self.x[c][n-1])**2))+self.y[c][n-1]
                     self.y[c][n] = self.y[c][n-1]-sigma_n*self.x[c][n-1]-self.beta
+
+                    # cambian sigma y beta
+                    #sigma(c)  = (x(c)(n) - x(c+1)(n)) * sigma(c)(n-1) * w(c)(c+1)//peso entre las dos c beta es igual
+
 
         for i in range(self.cells):
             self.x[i] = self.x[i][0:self.N]
