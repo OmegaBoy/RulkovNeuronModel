@@ -14,7 +14,7 @@ def changePar(parName, parValue):
 alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
 betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
 sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 1, "sigma", changePar)
-WPar = Plotting.SliderPar(rulkov.W, -0.02, 0.02, "W", changePar)
+WPar = Plotting.SliderPar(rulkov.W, 0, 1, "W", changePar)
 x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
 y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
 

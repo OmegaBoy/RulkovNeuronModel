@@ -33,7 +33,7 @@ class RulkovCoupled:
         for si in self.sigmaI: si[0] = self.sigma # Seteo sigma inicial en el primero de los Sigma
 
         # SETEO TEMPORALMENTE PARAMETROS DIFERENTES
-        self.sigmaI[1][0] = self.sigmaI[1][0] * 1.2
+        self.sigmaI[1][0] = self.sigmaI[1][0] * 1.2# aleatorio 0 y 1
         self.betaI[1][0] = self.betaI[1][0] * 1.2
 
         # Seteo los pesos en todo menos la diagonal (Con si misma) en 0
@@ -51,12 +51,12 @@ class RulkovCoupled:
                 for j in self.J:
                     if i != j:
                         # Calculo la diferencia normalizada de los estados de las neuronas
-                        normDiff = (self.x[j][n-1] - self.x[i][n-1])/((self.x[j][n-1] + self.x[i][n-1])/2)
+                        normDiff = (self.x[j][n-1] - self.x[i][n-1])
                         # Calculo el factor de cambio de coupling entre las neuronas como el peso entre estas por la diferencia normalizada
-                        fact = 1 + self.WI[i][j] * normDiff
+                        fact = self.WI[i][j] * normDiff
 
-                        self.betaI[i][n] = fact * self.betaI[i][n-1]
-                        self.sigmaI[i][n] = fact * self.sigmaI[i][n-1]
+                        self.betaI[i][n] = self.betaI[1][0] + fact * self.betaI[i][n-1]
+                        self.sigmaI[i][n] = self.sigmaI[1][0] + fact * self.sigmaI[i][n-1]
 
                         # print('NormDiff: ' + str(normDiff) + ', Fact: ' + str(fact) + ', Beta: ' + str(self.betaI[i][n]) + ', Sigma: ' + str(self.sigmaI[i][n]))
 
