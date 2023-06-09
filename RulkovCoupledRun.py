@@ -4,7 +4,7 @@ sys.path.append('Includes')
 from Plotting import Plotting
 from RulkovCoupled import RulkovCoupled
 # %% RULKOV
-rulkov = RulkovCoupled(alpha=4.8, sigma=0.001, beta=0.001, cells=2, W=1, x0=-2, y0=-2.9, N=8000)
+rulkov = RulkovCoupled(alpha=4.3, sigma=0.001, beta=0.001, cells=2, W=0, x0=-2, y0=-2.9, N=800)
 # %% Slider Parameters
 def changePar(parName, parValue):
     setattr(rulkov, parName, parValue)
@@ -13,8 +13,8 @@ def changePar(parName, parValue):
 
 alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
 betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
-sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 0.001, "sigma", changePar)
-WPar = Plotting.SliderPar(rulkov.W, 0, 1, "W", changePar)
+sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 1, "sigma", changePar)
+WPar = Plotting.SliderPar(rulkov.W, -0.02, 0.02, "W", changePar)
 x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
 y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
 
@@ -30,8 +30,8 @@ def getData():
     return datas
 
 datas = getData()
-scale=20
-plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=False, extraSliders=pars)
+scale=1
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
 # %% Phase Space
 # plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
 # %% Map

@@ -95,8 +95,10 @@ bins = 80
 # plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 # %% Histogram
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0])
+plotting.PlotMultiple([[[i for i in range(len(intervals))],intervals, 'o']])
 # plotting.PlotMultiple([[sliderFunc.datas[1][0], sliderFunc.datas[1][1]], [[i for i in range(len(intervals))] ,intervals]], together=False)
 
+# plotting.Histogram(intervals, bins,ylog=False, xlog=False)
 # %%
 # slopeIndexes = []
 # slopeIndexes = [[0, 8],[15, 32]]
@@ -108,4 +110,4 @@ intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0])
 # plotting.PlotHistogramSlopes(intervals, bins, slopeIndexes)
 
 # %% Power series
-plotting.PowerSeries(intervals, True, True)
+# plotting.PowerSeries(intervals, False, False)
