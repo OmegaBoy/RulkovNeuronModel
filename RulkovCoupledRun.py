@@ -4,34 +4,35 @@ sys.path.append('Includes')
 from Plotting import Plotting
 from RulkovCoupled import RulkovCoupled
 # %% RULKOV
-rulkov = RulkovCoupled(alpha=4, sigma=0.001, cells=2, W=0, x0=1, y0=1, N=8000)
+rulkov = RulkovCoupled(alpha=4.8, sigma=0.001, beta=0.001, cells=2, W=1, x0=-2, y0=-2.9, N=8000)
 # %% Slider Parameters
 def changePar(parName, parValue):
     setattr(rulkov, parName, parValue)
     rulkov.Simulate()
     return getData()
 
-alphaPar = (rulkov.alpha, 0, 8, "alpha", changePar)
-sigmaPar = (rulkov.sigma, 0, 0.001, "sigma", changePar)
-WPar = (rulkov.W, 0, 1, "W", changePar)
-x0Par = (rulkov.x0, -8, 8, "x0", changePar)
-y0Par = (rulkov.y0, -6, 6, "y0", changePar)
+alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
+betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
+sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 0.001, "sigma", changePar)
+WPar = Plotting.SliderPar(rulkov.W, 0, 1, "W", changePar)
+x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
+y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
 
-pars = [alphaPar, sigmaPar, WPar, x0Par, y0Par]
+pars = [alphaPar, betaPar, sigmaPar, WPar, x0Par, y0Par]
 # %% PLOTTING
 plotting = Plotting()
 # %% Burst vs N
 def getData():
     datas=[]
-    for c in rulkov.cells:
+    for c in range(rulkov.cells):
         datas.append([[n for n in range(rulkov.N)], rulkov.x[c]])
-        datas.append([[n for n in range(rulkov.N)], rulkov.y[c]])
+        # datas.append([[n for n in range(rulkov.N)], rulkov.y[c]])
     return datas
 
 datas = getData()
-scale=1
-plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
+scale=20
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=False, extraSliders=pars)
 # %% Phase Space
-# plotting.PlotPhaseSpace(rulkov.x[0], rulkov.y[0], rulkov.N, step=100)
+# plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
 # %% Map
-# plotting.PlotPhaseSpace(rulkov.x[0][0:rulkov.N-1], rulkov.x[0][1:rulkov.N], rulkov.N - 1, step=100)
+# plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)
