@@ -1,6 +1,9 @@
 class RulkovCoupled:
     def __init__(self, alpha=None, sigma=None, beta=None, cells=None, W=None, x0=None, y0=None, N=None):
         from Utilities import Utilities
+        import random as rng
+        self.rng =  rng
+        self.parsvarrang = 0.1
 
         Utilities.ChangeParameter(alpha, self, "alpha") # Parametro Alpha
         Utilities.ChangeParameter(sigma, self, "sigma") # Parametro Sigma
@@ -32,9 +35,13 @@ class RulkovCoupled:
         for bi in self.betaI: bi[0] = self.beta # Seteo alpha en el primero de los Beta
         for si in self.sigmaI: si[0] = self.sigma # Seteo sigma inicial en el primero de los Sigma
 
-        # SETEO TEMPORALMENTE PARAMETROS DIFERENTES
-        self.sigmaI[1][0] = self.sigmaI[1][0] * 1.2# aleatorio 0 y 1
-        self.betaI[1][0] = self.betaI[1][0] * 1.2
+        # Si aun no estan generados los ruidos de los parametros los genero
+        if not hasattr(self, "parsvar"):
+            self.sigmavar = [self.rng.uniform(1 - self.parsvarrang, 1 + self.parsvarrang) for _ in range(self.cells)]
+        # Le añado ruido a los parametros de entrada
+        for c in range(self.cells):
+            self.sigmaI[c][0] = self.sigmaI[c][0] * self.sigmavar[c]
+            self.betaI[c][0] = self.betaI[c][0] * self.sigmavar[c]
 
         # Seteo los pesos en todo menos la diagonal (Con si misma) en 0
         for i in range(0, self.cells):

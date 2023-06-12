@@ -5,8 +5,8 @@
 * ~~Graficar la serie de intervalos~~
 * ~~El espectro de potencia de esa serie~~
 * ~~Poder ver las 3 ventanas y verlo~~
-* Calcular la neurona acoplada
-*  MEDIA Y DESVIOSTD DE INTERVALOS
-*  ESPECTRO DE POTENCIAS
-*  10000 COMO MINIMO
-*  ESPECTRO CON SUAVISADOS
+* ~~Calcular la neurona acoplada~~
+*  Media y Desviada estandard de intervalos
+*  Espectro de potencias
+*  10000 como mínimo
+*  Espectro con suavisados
