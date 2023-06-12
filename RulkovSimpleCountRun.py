@@ -15,11 +15,11 @@ def changePar(parName, parValue):
     rulkov.Simulate()
     return getData()
 
-alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
-betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
-sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 0.001, "sigma", changePar)
-x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
-y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
+alphaPar = Plotting.SliderPar('TextBox', rulkov.alpha, 0, 8 , "alpha", changePar)
+betaPar = Plotting.SliderPar('TextBox', rulkov.beta, 0, 0.002, "beta", changePar)
+sigmaPar = Plotting.SliderPar('TextBox', rulkov.sigma, 0, 0.001, "sigma", changePar)
+x0Par = Plotting.SliderPar('TextBox', rulkov.x0, -8, 8, "x0", changePar)
+y0Par = Plotting.SliderPar('TextBox', rulkov.y0, -6, 6, "y0", changePar)
 
 pars = [alphaPar, betaPar, sigmaPar, x0Par, y0Par]
 # %% PLOTTING
@@ -82,9 +82,9 @@ refractoryTimeVal = 0
 
 sliderFunc = SliderFunctions()
 
-noiseDev = Plotting.SliderPar(noiseDevVal, 0, 2, "noiseDev", sliderFunc.changePar)
-threshold = Plotting.SliderPar(thresholdVal, 0, 5, "threshold", sliderFunc.changePar)
-refractoryTime = Plotting.SliderPar(refractoryTimeVal, 0, 10, "refractoryTime", sliderFunc.changePar)
+noiseDev = Plotting.SliderPar('TextBox', noiseDevVal, 0, 2, "noiseDev", sliderFunc.changePar)
+threshold = Plotting.SliderPar('TextBox', thresholdVal, 0, 5, "threshold", sliderFunc.changePar)
+refractoryTime = Plotting.SliderPar('TextBox', refractoryTimeVal, 0, 10, "refractoryTime", sliderFunc.changePar)
 
 pars = [noiseDev, threshold, refractoryTime]
    
