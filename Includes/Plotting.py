@@ -4,10 +4,12 @@ class Plotting:
         import math
         import matplotlib.pyplot as plt
         from matplotlib.widgets import Slider
+        from matplotlib.widgets import TextBox
         self.np = np
         self.math = math
         self.plt = plt
         self.slider = Slider
+        self.TextBox = TextBox
 
     def PlotMultiple(self, datas, together = True, logx = False, logy = False):
         if together:
@@ -25,13 +27,13 @@ class Plotting:
                 if logy == True: ax[i].set_yscale('log')
         self.plt.show()
 
-    def SliderPlot(self, datas, step, zoom, together=True, extraSliders=[]):
+    def SliderPlot(self, datas, step, zoom, together=True, extraPars=[]):
         if together:
             fig, ax = self.plt.subplots()
         else:
             fig, ax = self.plt.subplots(len(datas))
         bottom = 0.15
-        if len(extraSliders) > 0:
+        if len(extraPars) > 0:
             bottom = 0.5
         self.plt.subplots_adjust(bottom=bottom)
 
@@ -71,38 +73,64 @@ class Plotting:
         frac=1000
 
         def updatePar(val, iPar):
-            extraSlider = extraSliders[iPar]
-            datas = extraSlider.ChangeFunction(extraSlider.ParName, val)
+            extraPar = extraPars[iPar]
+            datas = extraPar.ChangeFunction(extraPar.ParName, val)
             _, yMin, _, yMax = self.CalculateBoundaries(datas)
             ax.set_ylim(yMin/zoom, yMax/zoom)
             for d in range(len(datas)):
                 linePlots[d].set_data(datas[d][0], datas[d][1])
 
-        for iPar in range(len(extraSliders)):
-            extraSlider = extraSliders[iPar]
+        for iPar in range(len(extraPars)):
+            extraPar = extraPars[iPar]
             eax = self.plt.axes([0.2, bottom - 0.1 - parsHeight - parsHeight * iPar, parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
-            extraSlider.Slider = self.slider(eax, extraSlider.ParName, extraSlider.MinValue, extraSlider.MaxValue, valinit=extraSlider.InitialValue, valstep=(extraSlider.MaxValue - extraSlider.MinValue)/frac, orientation='horizontal')
-            match iPar:
-                case 0:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 0))
-                case 1:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 1))
-                case 2:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 2))
-                case 3:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 3))
-                case 4:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 4))
-                case 5:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 5))
-                case 6:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 6))
-                case 7:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 7))
-                case 8:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 8))
-                case 9:
-                    extraSlider.Slider.on_changed(lambda val: updatePar(val, 9))
+            match extraPar.ParType:
+                case 'Slider':
+                    extraPar.Par = self.slider(eax, extraPar.ParName, extraPar.MinValue, extraPar.MaxValue, valinit=extraPar.InitialValue, valstep=(extraPar.MaxValue - extraPar.MinValue)/frac, orientation='horizontal')
+                    match iPar:
+                        case 0:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 0))
+                        case 1:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 1))
+                        case 2:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 2))
+                        case 3:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 3))
+                        case 4:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 4))
+                        case 5:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 5))
+                        case 6:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 6))
+                        case 7:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 7))
+                        case 8:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 8))
+                        case 9:
+                            extraPar.Par.on_changed(lambda val: updatePar(val, 9))
+
+                case 'TextBox':
+                    extraPar.Par = self.TextBox(eax, extraPar.ParName, extraPar.InitialValue)
+                    match iPar:
+                        case 0:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 0))
+                        case 1:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 1))
+                        case 2:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 2))
+                        case 3:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 3))
+                        case 4:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 4))
+                        case 5:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 5))
+                        case 6:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 6))
+                        case 7:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 7))
+                        case 8:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 8))
+                        case 9:
+                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 9))
         self.plt.show()
 
     def CalculateBoundaries(self, datas):
@@ -260,10 +288,11 @@ class Plotting:
         self.plt.show()
 
     class SliderPar:
-        def __init__(self, initialValue = None, minValue = None, maxValue = None, parName = None, changeFunction = None):
+        def __init__(self, parType = 'Slider', initialValue = None, minValue = None, maxValue = None, parName = None, changeFunction = None):
             self.InitialValue = initialValue
             self.MinValue = minValue
             self.MaxValue = maxValue
             self.ParName = parName
             self.ChangeFunction = changeFunction
-            self.Slider = None
+            self.Par = None
+            self.ParType = parType

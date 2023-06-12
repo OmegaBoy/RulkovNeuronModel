@@ -11,12 +11,12 @@ def changePar(parName, parValue):
     rulkov.Simulate()
     return getData()
 
-alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
-betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
-sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 1, "sigma", changePar)
-WPar = Plotting.SliderPar(rulkov.W, 0, 1, "W", changePar)
-x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
-y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
+alphaPar = Plotting.SliderPar('TextBox', rulkov.alpha, 0, 8 , "alpha", changePar)
+betaPar = Plotting.SliderPar('TextBox', rulkov.beta, 0, 0.002, "beta", changePar)
+sigmaPar = Plotting.SliderPar('TextBox', rulkov.sigma, 0, 1, "sigma", changePar)
+WPar = Plotting.SliderPar('TextBox', rulkov.W, 0, 1, "W", changePar)
+x0Par = Plotting.SliderPar('TextBox', rulkov.x0, -8, 8, "x0", changePar)
+y0Par = Plotting.SliderPar('TextBox', rulkov.y0, -6, 6, "y0", changePar)
 
 pars = [alphaPar, betaPar, sigmaPar, WPar, x0Par, y0Par]
 # %% PLOTTING
@@ -31,7 +31,7 @@ def getData():
 
 datas = getData()
 scale=1
-plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraPars=pars)
 # %% Phase Space
 # plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
 # %% Map

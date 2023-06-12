@@ -29,7 +29,7 @@ def getData():
 
 datas = getData()
 scale=5
-plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraSliders=pars)
+plotting.SliderPlot(datas=datas, step=rulkov.N/scale, zoom=0.8, together=True, extraPars=pars)
 # %% Phase Space
 # plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
 # %% Map
