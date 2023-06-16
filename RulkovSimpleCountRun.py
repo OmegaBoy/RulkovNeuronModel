@@ -94,20 +94,15 @@ scale = 400
 bins = 80
 # plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 # %% Histogram
-intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0])
-plotting.PlotMultiple([[[i for i in range(len(intervals))],intervals, 'o']])
+intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]) # Obtengo los intervalos
+
+# plotting.PlotMultiple([[[i for i in range(len(intervals))],intervals, 'o']]) # Plot de los intervalos
 # plotting.PlotMultiple([[sliderFunc.datas[1][0], sliderFunc.datas[1][1]], [[i for i in range(len(intervals))] ,intervals]], together=False)
 
 # plotting.Histogram(intervals, bins,ylog=False, xlog=False)
 # %%
-# slopeIndexes = []
-# slopeIndexes = [[0, 8],[15, 32]]
-# slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, slopeIndexes=slopeIndexes, threshold=1, minSequenceSize=2)
-# datas=[[slopesData["Data"]["x"], slopesData["Data"]["y"]]]
-# for slope in slopesData["Slopes"]:
-#     datas.append([slope["x"], [vx*slope["Slope"].slope + slope["Slope"].intercept for vx in slope["x"]]])
-# plotting.PlotMultiple(datas)
-# plotting.PlotHistogramSlopes(intervals, bins, slopeIndexes)
+slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas
+plotting.PlotHistogramSlopes(signal=intervals, bins=bins, slopesData=slopesData, ylog=True, xlog=True)
 
 # %% Power series
 # plotting.PowerSeries(intervals, False, False)

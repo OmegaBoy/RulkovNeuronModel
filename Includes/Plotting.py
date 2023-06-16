@@ -263,27 +263,29 @@ class Plotting:
         smoothed_data = self.np.convolve(data, window, mode='same')
         return smoothed_data
 
-    def PlotHistogramSlopes(self, signal, bins = 10, slopeIndexes=[]):
-        hist, bins_edges = self.np.histogram(signal, bins)
+    def PlotHistogramSlopes(self, signal, ylog=False, xlog=False, bins = 10, slopesData = []):
+        datas=[]
+        # Ponemos rectas en las pendientes
+        for slope in slopesData["Slopes"]:
+            datas.append([[lx for lx in slope["lx"]], [vx*slope["Slope"].slope + slope["Slope"].intercept for vx in slope["lx"]]])
 
-        y = []
-        x = []
-        for n in range(bins):
-            if hist[n] != 0:
-                x.append((bins_edges[n + 1] + bins_edges[n])/2)
-                y.append(hist[n])
+        if not (ylog != None and ylog) or not (xlog != None and xlog):
+            for d in datas:
+                for n in range(len(d[0])):
+                    d[0][n] = self.np.exp(d[0][n])
+                    d[1][n] = self.np.exp(d[1][n])
+        
+        if ylog != None and ylog:
+            self.plt.yscale('log')
+        
+        if xlog != None and xlog:
+            self.plt.xscale('log')
 
-        lx = self.np.log(x)
-        ly = self.np.log(y)
-        self.plt.plot(lx,ly)
+        self.plt.hist(signal, bins=bins)
 
-        from scipy.stats import linregress
-        for si in slopeIndexes:
-            lxv = lx[si[0]:si[1]]
-            lyv = ly[si[0]:si[1]]
-            r = linregress(lxv, lyv)
-            self.plt.plot(lxv, [vx*r.slope + r.intercept for vx in lxv], marker="o", markersize=5)
-            self.plt.text(lxv[0], lyv[0], f'y={r.slope:.2f}*x+{r.intercept:.2f}')
+        #THIS IS BROKEN
+        for d in datas:
+            self.plt.plot(d[0], d[1])
 
         self.plt.show()
 

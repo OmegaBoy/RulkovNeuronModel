@@ -41,7 +41,7 @@ class SpikeAnalyzer:
         noisedSignal = [signal[n] + noise[n] for n in range(N)]
         return [iNoisedSignal, noisedSignal]
     
-    def CalculateHistogramSlopes(signal, bins = 10, slopeIndexes=[], threshold = 1, minSequenceSize = 2):
+    def CalculateHistogramSlopes(signal, bins = 10, threshold = 1, minSequenceSize = 2):
         import numpy as np
         hist, bins_edges = np.histogram(signal, bins)
 
@@ -58,6 +58,7 @@ class SpikeAnalyzer:
         import matplotlib.pyplot as plt
         ds = SpikeAnalyzer.CalculateSlopeSignal(lx, ly)
 
+        slopeIndexes=[]
         currentIndexes = []
         for n in range(len(ds[0])):
             if ds[1][n] < threshold:
@@ -75,13 +76,17 @@ class SpikeAnalyzer:
         from scipy.stats import linregress
         slopes = []
         for si in slopeIndexes:
+            xv = [np.exp(x) for x in lx]
+            yv = [np.exp(y) for y in ly]
             lxv = lx[si[0]:si[1]]
             lyv = ly[si[0]:si[1]]
             r = linregress(lxv, lyv)
             slopes.append({
                 "Slope": r,
-                "x": lxv,
-                "y": lyv
+                "x": xv,
+                "y": yv,
+                "lx": lxv,
+                "ly": lyv
             })
 
         return {
