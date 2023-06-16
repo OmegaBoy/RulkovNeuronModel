@@ -5,9 +5,11 @@ from RulkovSimple import RulkovSimple
 from SpikeAnalyzer import SpikeAnalyzer
 from Plotting import Plotting
 from Utilities import Utilities
+from MathUtil import MathUtil
 # %% RULKOV
 rulkov = RulkovSimple(alpha=4.8, beta=0.001, sigma=0.001, x0=-2, y0=-2.9, N=100000)
 plotting = Plotting()
+mathUtil = MathUtil()
 
 # %% Slider Parameters
 def changePar(parName, parValue):
@@ -89,20 +91,22 @@ refractoryTime = Plotting.SliderPar('TextBox', refractoryTimeVal, 0, 10, "refrac
 pars = [noiseDev, threshold, refractoryTime]
    
 sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal)
-# %% Plotting
+# %% Calculo de intervalos
 scale = 400
 bins = 80
 # plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
-# %% Histogram
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]) # Obtengo los intervalos
 
-# plotting.PlotMultiple([[[i for i in range(len(intervals))],intervals, 'o']]) # Plot de los intervalos
-# plotting.PlotMultiple([[sliderFunc.datas[1][0], sliderFunc.datas[1][1]], [[i for i in range(len(intervals))] ,intervals]], together=False)
+# %% Histogram
+# intervalsSub = 100 # Sublength of intervals
+# plotting.PlotMultiple([[[i for i in range(intervalsSub)],intervals[0:intervalsSub], 'o']]) # Plot de los intervalos
+# plotting.PlotMultiple([[sliderFunc.datas[1][0][0:intervalsSub], sliderFunc.datas[1][1][0:intervalsSub]], [[i for i in range(intervalsSub)] ,intervals[0:intervalsSub]]], together=False)
 
-# plotting.Histogram(intervals, bins,ylog=False, xlog=False)
-# %%
-slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas
-plotting.PlotHistogramSlopes(signal=intervals, bins=bins, slopesData=slopesData, ylog=True, xlog=True)
+plotting.Histogram(intervals, bins,ylog=False, xlog=False)
+# %% Calculo de Historgrama y sus pendientes (PENDIENTE DE MEJORA)
+# slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas
+# plotting.PlotHistogramSlopes(signal=intervals, bins=bins, slopesData=slopesData, ylog=True, xlog=True)
 
 # %% Power series
-# plotting.PowerSeries(intervals, False, False)
+plotting.PowerSeries(intervals, True, True)
+

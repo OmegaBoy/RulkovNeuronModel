@@ -6,7 +6,7 @@
 * ~~El espectro de potencia de esa serie~~
 * ~~Poder ver las 3 ventanas y verlo~~
 * ~~Calcular la neurona acoplada~~
-*  Media y Desviada estandard de intervalos
-*  Espectro de potencias
-*  10000 como mínimo
-*  Espectro con suavisados
+*  ~~Media y Desviada estandard de intervalos~~
+*  ~~Espectro de potencias~~
+*  ~~10000 como mínimo~~
+*  ~~Espectro con suavisados~~

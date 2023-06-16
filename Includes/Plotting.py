@@ -189,11 +189,26 @@ class Plotting:
             bottom = 0.5
         self.plt.subplots_adjust(bottom=bottom)
 
-        if ylog != None:
+        if ylog != None and ylog:
             self.plt.yscale('log')
         
-        if xlog != None:
+        if xlog != None and xlog:
             self.plt.xscale('log')
+
+        
+        # %% Media y Std Dev de Intervalos
+        mean = self.np.mean(data)
+        std = self.np.std(data)
+        print('Mean: ' + str(mean))
+        print('StdDev: ' + str(std))
+
+        # Add vertical lines for mean and standard deviation
+        self.plt.axvline(mean, color='red', linestyle='dashed', linewidth=2, label='Mean')
+        self.plt.axvline(mean + std, color='green', linestyle='dashed', linewidth=2, label='Standard Deviation')
+        self.plt.axvline(mean - std, color='green', linestyle='dashed', linewidth=2, label='Standard Deviation')
+
+        # Add legend
+        self.plt.legend()
 
         hist, bins = self.np.histogram(data, bins=bins)
         b = self.plt.bar(bins[:-1], hist, width=.3)
