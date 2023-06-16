@@ -10,6 +10,7 @@ from MathUtil import MathUtil
 rulkov = RulkovSimple(alpha=4.8, beta=0.001, sigma=0.001, x0=-2, y0=-2.9, N=100000)
 plotting = Plotting()
 mathUtil = MathUtil()
+doubleLog = True
 
 # %% Slider Parameters
 def changePar(parName, parValue):
@@ -97,16 +98,17 @@ bins = 80
 # plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]) # Obtengo los intervalos
 
-# %% Histogram
+# %% Visor de intervalos
 # intervalsSub = 100 # Sublength of intervals
 # plotting.PlotMultiple([[[i for i in range(intervalsSub)],intervals[0:intervalsSub], 'o']]) # Plot de los intervalos
 # plotting.PlotMultiple([[sliderFunc.datas[1][0][0:intervalsSub], sliderFunc.datas[1][1][0:intervalsSub]], [[i for i in range(intervalsSub)] ,intervals[0:intervalsSub]]], together=False)
 
-plotting.Histogram(intervals, bins,ylog=False, xlog=False)
+# %% Histogram
+plotting.Histogram(intervals, bins, ylog=doubleLog, xlog=doubleLog)
+
 # %% Calculo de Historgrama y sus pendientes (PENDIENTE DE MEJORA)
-# slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas
-# plotting.PlotHistogramSlopes(signal=intervals, bins=bins, slopesData=slopesData, ylog=True, xlog=True)
+slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas
+plotting.PlotHistogramSlopes(signal=intervals, bins=bins, slopesData=slopesData, ylog=doubleLog, xlog=doubleLog) # Graficamos el histograma con sus pendientes
 
 # %% Power series
-plotting.PowerSeries(intervals, True, True)
-
+plotting.PowerSeries(intervals, doubleLog, doubleLog)

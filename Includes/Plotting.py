@@ -284,6 +284,7 @@ class Plotting:
         for slope in slopesData["Slopes"]:
             datas.append([[lx for lx in slope["lx"]], [vx*slope["Slope"].slope + slope["Slope"].intercept for vx in slope["lx"]]])
 
+        #THIS IS BROKEN
         if not (ylog != None and ylog) or not (xlog != None and xlog):
             for d in datas:
                 for n in range(len(d[0])):
@@ -298,7 +299,6 @@ class Plotting:
 
         self.plt.hist(signal, bins=bins)
 
-        #THIS IS BROKEN
         for d in datas:
             self.plt.plot(d[0], d[1])
 
