@@ -308,6 +308,21 @@ class Plotting:
 
         self.plt.show()
 
+    def PlotRecurrence(self, signal):
+        # Calculo de la matriz de distancias
+        distance_matrix = self.np.abs(self.np.subtract.outer(signal, signal))
+        
+        # Elijo el mapa de color
+        cmap = self.plt.get_cmap('coolwarm')
+
+        # Creo el grafico de recurrencia
+        self.plt.imshow(distance_matrix, cmap=cmap, origin='lower')
+        self.plt.title('Grafico de Recurrencia')
+        
+        # Add colorbar with legend
+        cbar = self.plt.colorbar(label='Recurrencia')
+        self.plt.show()
+
     class DynamicPar:
         def __init__(self, parType = 'Slider', initialValue = None, minValue = None, maxValue = None, parName = None, changeFunction = None):
             self.InitialValue = initialValue
