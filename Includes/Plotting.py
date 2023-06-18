@@ -112,25 +112,25 @@ class Plotting:
                     extraPar.Par = self.TextBox(eax, extraPar.ParName, extraPar.InitialValue)
                     match iPar:
                         case 0:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 0))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 0))
                         case 1:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 1))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 1))
                         case 2:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 2))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 2))
                         case 3:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 3))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 3))
                         case 4:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 4))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 4))
                         case 5:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 5))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 5))
                         case 6:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 6))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 6))
                         case 7:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 7))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 7))
                         case 8:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 8))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 8))
                         case 9:
-                            extraPar.Par.on_text_change(lambda val: updatePar(float(val), 9))
+                            extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 9))
         self.plt.show()
 
     def CalculateBoundaries(self, datas):

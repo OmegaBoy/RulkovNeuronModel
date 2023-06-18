@@ -4,7 +4,7 @@ sys.path.append('Includes')
 from Plotting import Plotting
 from RulkovCoupled import RulkovCoupled
 # %% RULKOV
-rulkov = RulkovCoupled(alpha=4.3, sigma=[0.001, 0.001], beta=0.001, cells=2, W=0, x0=-2, y0=-2.9, N=800)
+rulkov = RulkovCoupled(alpha=4.3, sigma=[0.001, 0.00112], beta=0.001, cells=2, W=0.01, x0=-2, y0=-2.9, N=800)
 # %% Slider Parameters
 def changePar(parName, parValue):
     splitName = parName.split('|')

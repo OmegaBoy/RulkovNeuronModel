@@ -26,7 +26,7 @@ class RulkovCoupled:
         self.J = range(0, self.cells) # Indice de Celula Vecina
         self.NI = range(1, self.NCO-1) # Numero de Pasos
         self.WI = [[0 for _ in range(self.cells)] for _ in range(self.cells)] # Matriz inicial de pesos
-        self.sigmaI = self.sigma # Matriz inicial de Sigma
+        self.sigmaI = [self.sigma[i] for i in range(self.cells)] # Matriz inicial de Sigma
 
         # TODO: Hacer que el factor que se achica sigma sea una variable y que vaya de 10 a 1000 veces mas chico
         # TODO: poder cambiar los parametros de una neurona a la vez
