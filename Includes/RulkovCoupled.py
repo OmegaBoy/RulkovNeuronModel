@@ -29,23 +29,11 @@ class RulkovCoupled:
         self.J = range(0, self.cells) # Indice de Celula Vecina
         self.NI = range(1, self.NCO-1) # Numero de Pasos
         self.WI = [[0 for _ in range(self.cells)] for _ in range(self.cells)] # Matriz inicial de pesos
-        self.betaI = [[0 for _ in range(self.NCO)] for _ in range(self.cells)] # Matriz inicial de Beta
-        self.sigmaI = [[0 for _ in range(self.NCO)] for _ in range(self.cells)] # Matriz inicial de Sigma
+        self.betaI = [self.beta for _ in range(self.cells)] # Matriz inicial de Beta
+        self.sigmaI = [self.sigma for _ in range(self.cells)] # Matriz inicial de Sigma
 
-        for bi in self.betaI: bi[0] = self.beta # Seteo alpha en el primero de los Beta
-        for si in self.sigmaI: si[0] = self.sigma # Seteo sigma inicial en el primero de los Sigma
-
-        # Si aun no estan generados los ruidos de los parametros los genero
-        if not hasattr(self, "parsvar"):
-            self.sigmavar = [self.rng.uniform(0, 1) / 1000 for _ in range(self.cells)]
-        # Hacer que el factor que se achica sigma sea una variable y que vaya de 10 a 1000 veces mas chico
-        # Le añado ruido a los parametros de entrada
-        for c in range(self.cells):
-            self.sigmaI[c][0] = self.sigmaI[c][0] + self.sigmavar[c]
-            self.betaI[c][0] = self.betaI[c][0] + self.sigmavar[c]
-
-        # poder cambiar los parametros de una neurona a la vez
-        self.sigmaI[1][0] = -0.5
+        # TODO: Hacer que el factor que se achica sigma sea una variable y que vaya de 10 a 1000 veces mas chico
+        # TODO: poder cambiar los parametros de una neurona a la vez
 
         # Seteo los pesos en todo menos la diagonal (Con si misma) en 0
         for i in range(0, self.cells):
@@ -61,15 +49,12 @@ class RulkovCoupled:
             for i in self.I:
                 for j in self.J:
                     if i != j:
-                        # Calculo la diferencia normalizada de los estados de las neuronas
-                        normDiff = (self.x[j][n-1] - self.x[i][n-1])
+                        # Calculo la diferencia de los estados de las neuronas
+                        diff = (self.x[j][n-1] - self.x[i][n-1])
                         # Calculo el factor de cambio de coupling entre las neuronas como el peso entre estas por la diferencia normalizada
-                        fact = self.WI[i][j] * normDiff
+                        fact = self.WI[i][j] * diff
 
-                        self.betaI[i][n] = self.betaI[1][0] + fact * self.betaI[i][n-1]
                         self.sigmaI[i][n] = self.sigmaI[1][0] + fact * self.sigmaI[i][n-1]
-
-                        # print('NormDiff: ' + str(normDiff) + ', Fact: ' + str(fact) + ', Beta: ' + str(self.betaI[i][n]) + ', Sigma: ' + str(self.sigmaI[i][n]))
 
         # Remuevo final
         for i in range(self.cells):
