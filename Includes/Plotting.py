@@ -76,7 +76,11 @@ class Plotting:
             extraPar = extraPars[iPar]
             datas = extraPar.ChangeFunction(extraPar.ParName, val)
             _, yMin, _, yMax = self.CalculateBoundaries(datas)
-            ax.set_ylim(yMin/zoom, yMax/zoom)
+            if together:
+                ax.set_ylim(yMin/zoom, yMax/zoom)
+            else:
+                for n in range(len(datas)):
+                    ax[n].set_ylim(yMin/zoom, yMax/zoom)
             for d in range(len(datas)):
                 linePlots[d].set_data(datas[d][0], datas[d][1])
 
