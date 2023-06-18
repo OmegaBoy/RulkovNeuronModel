@@ -304,7 +304,7 @@ class Plotting:
 
         self.plt.show()
 
-    class SliderPar:
+    class DynamicPar:
         def __init__(self, parType = 'Slider', initialValue = None, minValue = None, maxValue = None, parName = None, changeFunction = None):
             self.InitialValue = initialValue
             self.MinValue = minValue

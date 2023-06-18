@@ -4,21 +4,26 @@ sys.path.append('Includes')
 from Plotting import Plotting
 from RulkovCoupled import RulkovCoupled
 # %% RULKOV
-rulkov = RulkovCoupled(alpha=4.3, sigma=0.001, beta=0.001, cells=2, W=0, x0=-2, y0=-2.9, N=800)
+rulkov = RulkovCoupled(alpha=4.3, sigma=[0.001, 0.001], beta=0.001, cells=2, W=0, x0=-2, y0=-2.9, N=800)
 # %% Slider Parameters
 def changePar(parName, parValue):
-    setattr(rulkov, parName, parValue)
+    splitName = parName.split('|')
+    if len(splitName) == 1:
+        setattr(rulkov, parName, parValue)
+    else:
+        var = getattr(rulkov, splitName[0])
+        var[int(splitName[1])] = parValue
+        setattr(rulkov, splitName[0], var)
     rulkov.Simulate()
     return getData()
 
-alphaPar = Plotting.SliderPar('TextBox', rulkov.alpha, 0, 8 , "alpha", changePar)
-betaPar = Plotting.SliderPar('TextBox', rulkov.beta, 0, 0.002, "beta", changePar)
-sigmaPar = Plotting.SliderPar('TextBox', rulkov.sigma, 0, 1, "sigma", changePar)
-WPar = Plotting.SliderPar('TextBox', rulkov.W, 0, 1, "W", changePar)
-x0Par = Plotting.SliderPar('TextBox', rulkov.x0, -8, 8, "x0", changePar)
-y0Par = Plotting.SliderPar('TextBox', rulkov.y0, -6, 6, "y0", changePar)
+pars = []
+pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.alpha, parName="alpha", changeFunction=changePar))
+pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.beta, parName="beta", changeFunction=changePar))
+pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.sigma[0], parName="sigma|0", changeFunction=changePar))
+pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.sigma[1], parName="sigma|1", changeFunction=changePar))
+pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.W, parName="W", changeFunction=changePar))
 
-pars = [alphaPar, betaPar, sigmaPar, WPar, x0Par, y0Par]
 # %% PLOTTING
 plotting = Plotting()
 # %% Burst vs N

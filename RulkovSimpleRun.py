@@ -11,11 +11,11 @@ def changePar(parName, parValue):
     rulkov.Simulate()
     return getData()
 
-alphaPar = Plotting.SliderPar(rulkov.alpha, 0, 8 , "alpha", changePar)
-betaPar = Plotting.SliderPar(rulkov.beta, 0, 0.002, "beta", changePar)
-sigmaPar = Plotting.SliderPar(rulkov.sigma, 0, 0.001, "sigma", changePar)
-x0Par = Plotting.SliderPar(rulkov.x0, -8, 8, "x0", changePar)
-y0Par = Plotting.SliderPar(rulkov.y0, -6, 6, "y0", changePar)
+alphaPar = Plotting.DynamicPar(rulkov.alpha, 0, 8 , "alpha", changePar)
+betaPar = Plotting.DynamicPar(rulkov.beta, 0, 0.002, "beta", changePar)
+sigmaPar = Plotting.DynamicPar(rulkov.sigma, 0, 0.001, "sigma", changePar)
+x0Par = Plotting.DynamicPar(rulkov.x0, -8, 8, "x0", changePar)
+y0Par = Plotting.DynamicPar(rulkov.y0, -6, 6, "y0", changePar)
 
 pars = [alphaPar, betaPar, sigmaPar, x0Par, y0Par]
 # %% PLOTTING
