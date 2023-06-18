@@ -10,3 +10,7 @@
 *  ~~Espectro de potencias~~
 *  ~~10000 como mínimo~~
 *  ~~Espectro con suavisados~~
+*  Aplicar el grafico de recurrencias a un seno a un rand y a las neurona simple
+*  Modificar en una sola neurona cuando estan acopladas, y ver como se va modificando en el espacio de parametrtos
+*  Aplicarle a cada neurona las herramientas de caracterizacion
+*  Generar un informe con las imagenes

@@ -37,11 +37,15 @@ class RulkovCoupled:
 
         # Si aun no estan generados los ruidos de los parametros los genero
         if not hasattr(self, "parsvar"):
-            self.sigmavar = [self.rng.uniform(1 - self.parsvarrang, 1 + self.parsvarrang) for _ in range(self.cells)]
+            self.sigmavar = [self.rng.uniform(0, 1) / 1000 for _ in range(self.cells)]
+        # Hacer que el factor que se achica sigma sea una variable y que vaya de 10 a 1000 veces mas chico
         # Le añado ruido a los parametros de entrada
         for c in range(self.cells):
-            self.sigmaI[c][0] = self.sigmaI[c][0] * self.sigmavar[c]
-            self.betaI[c][0] = self.betaI[c][0] * self.sigmavar[c]
+            self.sigmaI[c][0] = self.sigmaI[c][0] + self.sigmavar[c]
+            self.betaI[c][0] = self.betaI[c][0] + self.sigmavar[c]
+
+        # poder cambiar los parametros de una neurona a la vez
+        self.sigmaI[1][0] = -0.5
 
         # Seteo los pesos en todo menos la diagonal (Con si misma) en 0
         for i in range(0, self.cells):
