@@ -1,9 +1,6 @@
 class RulkovCoupled:
     def __init__(self, alpha=None, sigma=None, beta=None, cells=None, W=None, x0=None, y0=None, N=None):
         from Utilities import Utilities
-        import random as rng
-        self.rng =  rng
-        self.parsvarrang = 0.1
 
         Utilities.ChangeParameter(alpha, self, "alpha") # Parametro Alpha
         Utilities.ChangeParameter(sigma, self, "sigma") # Parametro Sigma
@@ -29,7 +26,6 @@ class RulkovCoupled:
         self.J = range(0, self.cells) # Indice de Celula Vecina
         self.NI = range(1, self.NCO-1) # Numero de Pasos
         self.WI = [[0 for _ in range(self.cells)] for _ in range(self.cells)] # Matriz inicial de pesos
-        self.betaI = [self.beta for _ in range(self.cells)] # Matriz inicial de Beta
         self.sigmaI = [self.sigma for _ in range(self.cells)] # Matriz inicial de Sigma
 
         # TODO: Hacer que el factor que se achica sigma sea una variable y que vaya de 10 a 1000 veces mas chico
@@ -43,7 +39,7 @@ class RulkovCoupled:
             # Calculamos el estado actual de cada neurona
             for i in self.I:
                 self.x[i][n] = (self.alpha/(1+(self.x[i][n-1])**2))+self.y[i][n-1]
-                self.y[i][n] = self.y[i][n-1]-self.sigmaI[i][n-1]*self.x[i][n-1]-self.betaI[i][n-1]
+                self.y[i][n] = self.y[i][n-1]-self.sigmaI[i]*self.x[i][n-1]-self.beta
 
             # Calculamos los nuevos parametros a partir de la diferencia entre las neuronas
             for i in self.I:
@@ -54,7 +50,7 @@ class RulkovCoupled:
                         # Calculo el factor de cambio de coupling entre las neuronas como el peso entre estas por la diferencia normalizada
                         fact = self.WI[i][j] * diff
 
-                        self.sigmaI[i][n] = self.sigmaI[1][0] + fact * self.sigmaI[i][n-1]
+                        self.sigmaI[i] = self.sigma + fact * self.sigmaI[i]
 
         # Remuevo final
         for i in range(self.cells):
