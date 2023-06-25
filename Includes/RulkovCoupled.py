@@ -14,32 +14,39 @@ class RulkovCoupled:
         self.Simulate()
 
     def Simulate(self):
+        # Variables de resultado
         self.x = []
         self.y = []
         
         self.NCO = int(self.N*1.1) # Numero de pasos con un 10% mas para descartar el borde
+        
         self.x = [[0 for _ in range(self.NCO)] for _ in range(self.cells)] # Matriz inicial de X
-        for X in self.x: X[0] = self.x0 # Seteo X0 en el primero de los X
+        for c in self.x: c[0] = self.x0 # Seteo X0 en el primero de los X
+        
         self.y = [[0 for _ in range(self.NCO)] for _ in range(self.cells)]  # Matriz inicial de Y
-        for Y in self.y: Y[0] = self.y0 # Seteo Y0 en el primero de los X
+        for c in self.y: c[0] = self.y0 # Seteo Y0 en el primero de los X
+
         self.I = range(0, self.cells) # Indice de Celula
         self.J = range(0, self.cells) # Indice de Celula Vecina
         self.NI = range(1, self.NCO-1) # Numero de Pasos
-        self.WI = [[0 for _ in range(self.cells)] for _ in range(self.cells)] # Matriz inicial de pesos
-        self.sigmaI = [self.sigma[i] for i in range(self.cells)] # Matriz inicial de Sigma
 
-        # TODO: Hacer que el factor que se achica sigma sea una variable y que vaya de 10 a 1000 veces mas chico
-        # TODO: poder cambiar los parametros de una neurona a la vez
+        self.WI = [[0 for _ in range(self.cells)] for _ in range(self.cells)] # Matriz inicial de pesos
+
+        # Parametros de la(s) neurona(s)
+        self.alphaI = [self.alpha[i] for i in range(self.cells)] # Matriz inicial de Alpha
+        self.betaI = [self.beta[i] for i in range(self.cells)] # Matriz inicial de Beta
+        self.sigmaI = [self.sigma[i] for i in range(self.cells)] # Matriz inicial de Sigma
 
         # Seteo los pesos en todo menos la diagonal (Con si misma) en 0
         for i in range(0, self.cells):
-            self.WI[i][self.cells - 1 - i] = self.W
+            for j in range(0, self.cells):
+                self.WI[i][j] = self.W[i][j]
 
         for n in self.NI:
             # Calculamos el estado actual de cada neurona
             for i in self.I:
-                self.x[i][n] = (self.alpha/(1+(self.x[i][n-1])**2))+self.y[i][n-1]
-                self.y[i][n] = self.y[i][n-1]-self.sigmaI[i]*self.x[i][n-1]-self.beta
+                self.x[i][n] = (self.alphaI[i]/(1+(self.x[i][n-1])**2))+self.y[i][n-1]
+                self.y[i][n] = self.y[i][n-1]-self.sigmaI[i]*self.x[i][n-1]-self.betaI[i]
 
             # Calculamos los nuevos parametros a partir de la diferencia entre las neuronas
             for i in self.I:

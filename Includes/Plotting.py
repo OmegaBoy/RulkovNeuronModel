@@ -68,10 +68,6 @@ class Plotting:
 
         spos.on_changed(lambda val: update(val))
 
-        parsWidth = 0.65
-        parsHeight = 0.03
-        frac=1000
-
         def updatePar(val, iPar):
             extraPar = extraPars[iPar]
             datas = extraPar.ChangeFunction(extraPar.ParName, val)
@@ -86,9 +82,12 @@ class Plotting:
 
         for iPar in range(len(extraPars)):
             extraPar = extraPars[iPar]
-            eax = self.plt.axes([0.2, bottom - 0.1 - parsHeight - parsHeight * iPar, parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
             match extraPar.ParType:
                 case 'Slider':
+                    parsWidth = 0.65
+                    parsHeight = 0.03
+                    frac=1000
+                    eax = self.plt.axes([0.2, bottom - 0.1 - parsHeight - parsHeight * iPar, parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
                     extraPar.Par = self.slider(eax, extraPar.ParName, extraPar.MinValue, extraPar.MaxValue, valinit=extraPar.InitialValue, valstep=(extraPar.MaxValue - extraPar.MinValue)/frac, orientation='horizontal')
                     match iPar:
                         case 0:
@@ -113,6 +112,11 @@ class Plotting:
                             extraPar.Par.on_changed(lambda val: updatePar(val, 9))
 
                 case 'TextBox':
+                    parsWidth = 0.1
+                    parsHeight = 0.03
+                    if iPar < 13: eax = self.plt.axes([0.2, bottom - 0.1 - parsHeight - parsHeight * iPar, parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
+                    if iPar > 12 and iPar < 26: eax = self.plt.axes([0.5, bottom - 0.1 - parsHeight - parsHeight * (iPar - 13), parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
+                    if iPar > 25: eax = self.plt.axes([0.8, bottom - 0.1 - parsHeight - parsHeight * (iPar - 26), parsWidth, parsHeight], facecolor='lightgoldenrodyellow')
                     extraPar.Par = self.TextBox(eax, extraPar.ParName, extraPar.InitialValue)
                     match iPar:
                         case 0:
