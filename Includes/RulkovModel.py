@@ -1,4 +1,4 @@
-class RulkovCoupled:
+class RulkovModel:
     def __init__(self, alpha=None, sigma=None, beta=None, cells=None, W=None, x0=None, y0=None, N=None):
         from Utilities import Utilities
 

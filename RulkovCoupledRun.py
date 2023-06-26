@@ -2,25 +2,27 @@
 import sys
 sys.path.append('Includes')
 from Plotting import Plotting
-from RulkovCoupled import RulkovCoupled
+from RulkovModel import RulkovModel
 plotting = Plotting()
 
 # %% Rulkov Simulation
 # Inicializo los parametros para todas las celulas
-cells = 2
-alpha = []
-sigma = []
-beta = []
-W = [[0 for _ in range(cells)] for _ in range(cells)]
-for c in range(cells):
-    alpha.append(4.3)
-    sigma.append(0.001)
-    beta.append(0.001)
-    for v in range(cells):
-        if not c == v:
-            W[c][v] = 0.01
+cells = 1
+alpha_ini = 4.3
+sigma_ini = 0.001
+beta_ini = 0.001
+w_ini = 0.01
+x_init = -2
+y_init = -2.9
+N_pasos = 2000
 
-rulkov = RulkovCoupled(alpha=alpha, sigma=sigma, beta=beta, cells=cells, W=W, x0=-2, y0=-2.9, N=2000)
+alpha = [alpha_ini for _ in range(cells)]
+sigma = [sigma_ini for _ in range(cells)]
+beta = [beta_ini for _ in range(cells)]
+W = [[w_ini if not c == v else 0 for v in range(cells)] for c in range(cells)]
+
+# %% Corro la simulación
+rulkov = RulkovModel(alpha=alpha, sigma=sigma, beta=beta, cells=cells, W=W, x0=x_init, y0=y_init, N=N_pasos)
 
 # %% Define Slider Parameters
 def changePar(parName, parValue): #Change function
@@ -64,10 +66,9 @@ for c in range(cells):
             pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.W[c][v], parName="W|" + str(c) + "|" + str(v), changeFunction=changePar))
 
 # %% Burst vs N
-plotting.SliderPlot(datas=getData(), step=1000, zoom=0.8, together=True, extraPars=pars)
+plot_together = True
+zoom = 0.8
+step = 1000
+plotting.SliderPlot(datas=getData(), step=step, zoom=zoom, together=plot_together, extraPars=pars)
 
-# %% Phase Space
-# plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
-
-# %% Map
-# plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)
+# %% Caracterización
