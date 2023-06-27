@@ -1,3 +1,0 @@
-# Simulación de neurona de Rulkov
-## Equación del modelo de Rulkov
-<figure><img src="./eq.png" alt="equación" style="width: 100%"><figcaption align="center"><b>Eq.1 - x es la variable rápida que describe procesos rapidos en la neurona como los cambios de tension en la membrana.</br>y es la variable lenta que describe los procesos lentos en la neurona como la apertura y cerrado de canales ionicos.</b></br></figcaption></figure>

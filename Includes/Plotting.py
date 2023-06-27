@@ -27,7 +27,7 @@ class Plotting:
                 if logy == True: ax[i].set_yscale('log')
         self.plt.show()
 
-    def SliderPlot(self, datas, step, zoom, together=True, extraPars=[]):
+    def SliderPlot(self, datas, step, together=True, extraPars=[]):
         if together:
             fig, ax = self.plt.subplots()
         else:
@@ -49,21 +49,22 @@ class Plotting:
 
         self.plt.axis()
 
-        xMin, yMin, xMax, yMax = self.CalculateBoundaries(datas)
-        self.plt.xlim(xMin/zoom, step)
-        self.plt.ylim(yMin/zoom, yMax/zoom)
+        bounds = self.CalculateBoundaries(datas, together)
+
+        for n in range(len(datas)):
+            ax[n].axis([0, step, bounds[n]["yMin"], bounds[n]["yMax"]])
 
         axpos = self.plt.axes([0.2, bottom - 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
 
-        spos = self.slider(axpos, 'Pos', 0, (xMax - xMin)-step, orientation='horizontal')
+        spos = self.slider(axpos, 'Pos', 0, (bounds[0]["xMax"] - bounds[0]["xMin"])-step, orientation='horizontal')
 
         def update(val):
             pos = val
             if together:
-                ax.axis([pos, pos+step, yMin/zoom, yMax/zoom])
+                ax.axis([pos, pos+step, bounds[n]["yMin"], bounds[n]["yMax"]])
             else:
                 for n in range(len(datas)):
-                    ax[n].axis([pos, pos+step, yMin/zoom, yMax/zoom])
+                    ax[n].axis([pos, pos+step, bounds[n]["yMin"], bounds[n]["yMax"]])
             fig.canvas.draw_idle()
 
         spos.on_changed(lambda val: update(val))
@@ -73,10 +74,10 @@ class Plotting:
             datas = extraPar.ChangeFunction(extraPar.ParName, val)
             _, yMin, _, yMax = self.CalculateBoundaries(datas)
             if together:
-                ax.set_ylim(yMin/zoom, yMax/zoom)
+                ax.set_ylim(yMin, yMax)
             else:
                 for n in range(len(datas)):
-                    ax[n].set_ylim(yMin/zoom, yMax/zoom)
+                    ax[n].set_ylim(yMin, yMax)
             for d in range(len(datas)):
                 linePlots[d].set_data(datas[d][0], datas[d][1])
 
@@ -141,7 +142,8 @@ class Plotting:
                             extraPar.Par.on_submit(lambda val: updatePar(float(val if val != '' else extraPar.InitialValue), 9))
         self.plt.show()
 
-    def CalculateBoundaries(self, datas):
+    def CalculateBoundaries(self, datas, together = True):
+        bounds = []
         xMin = 0
         yMin = 0
         xMax = 0
@@ -150,17 +152,26 @@ class Plotting:
             if len(data[0])>0:
                 xnMin = min(data[0])
                 xnMax = max(data[0])
-                if xnMin < xMin:
+                if together:
+                    if xnMin < xMin:
+                        xMin = xnMin
+                    if xnMax > xMax:
+                        xMax = xnMax
+                else:
                     xMin = xnMin
-                if xnMax > xMax:
                     xMax = xnMax
                 ynMin = min(data[1])
                 ynMax = max(data[1])
-                if ynMin < yMin:
+                if together:
+                    if ynMin < yMin:
+                        yMin = ynMin
+                    if ynMax > yMax:
+                        yMax = ynMax
+                else:
                     yMin = ynMin
-                if ynMax > yMax:
                     yMax = ynMax
-        return xMin,yMin,xMax,yMax
+                bounds.append({"xMin": xMin,"yMin": yMin,"xMax": xMax,"yMax": yMax})
+        return bounds
 
     def PlotPhaseSpace(self, x, y, N, step):
         stepi = 0

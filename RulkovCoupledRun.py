@@ -67,8 +67,7 @@ for c in range(cells):
 
 # %% Burst vs N
 plot_together = True
-zoom = 0.8
 step = 1000
-plotting.SliderPlot(datas=getData(), step=step, zoom=zoom, together=plot_together, extraPars=pars)
+plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
 
 # %% Caracterización

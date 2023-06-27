@@ -50,6 +50,9 @@ def getData(var = 0):
                 datas.append([[n for n in range(rulkov.N)], rulkov.x[c]])
             case 1:
                 datas.append([[n for n in range(rulkov.N)], rulkov.y[c]])
+            case 2:
+                datas.append([[n for n in range(rulkov.N)], rulkov.x[c]])
+                datas.append([[n for n in range(rulkov.N)], rulkov.y[c]])
     return datas
 
 # Parámetros
@@ -66,10 +69,9 @@ for c in range(cells):
             pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.W[c][v], parName="W|" + str(c) + "|" + str(v), changeFunction=changePar))
 
 # %% Burst vs N
-plot_together = True
-zoom = 0.8
-step = 1000
-plotting.SliderPlot(datas=getData(), step=step, zoom=zoom, together=plot_together, extraPars=pars)
+plot_together = False
+step = 1500
+plotting.SliderPlot(datas=getData(2), step=step, together=plot_together, extraPars=pars)
 
 # %% Phase Space
 # plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)

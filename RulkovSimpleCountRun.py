@@ -69,9 +69,8 @@ for c in range(cells):
 
 # %% Burst vs N
 plot_together = True
-zoom = 0.8
 step = 1000
-# plotting.SliderPlot(datas=getData(), step=step, zoom=zoom, together=plot_together, extraPars=pars)
+# plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
 
 class SliderFunctions:
     def __init__(self) -> None:
@@ -130,7 +129,7 @@ sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal)
 # %% Calculo de intervalos
 scale = 400
 bins = 80
-# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, zoom=0.8, extraSliders=pars)
+# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, extraSliders=pars)
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]) # Obtengo los intervalos
 
 # %% Visor de intervalos
