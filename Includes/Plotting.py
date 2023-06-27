@@ -188,8 +188,7 @@ class Plotting:
         posSlide = self.plt.axes(
             [0.2, bottom - 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
 
-        spos = self.slider(posSlide, 't', 0, N-step,
-                           orientation='horizontal')
+        spos = self.slider(posSlide, 't', 0, N-step, orientation='horizontal')
 
         def updatePos(val):
             stepi = int(val)

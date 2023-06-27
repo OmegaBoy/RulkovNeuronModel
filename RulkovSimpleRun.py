@@ -8,13 +8,13 @@ plotting = Plotting()
 # %% Rulkov Simulation
 # Inicializo los parametros para todas las celulas
 cells = 1
-alpha_ini = 4.3
+alpha_ini = 4
 sigma_ini = 0.001
 beta_ini = 0.001
 w_ini = 0.01
 x_init = -2
 y_init = -2.9
-N_pasos = 10000
+N_pasos = 100000
 
 alpha = [alpha_ini for _ in range(cells)]
 sigma = [sigma_ini for _ in range(cells)]
@@ -70,10 +70,11 @@ for c in range(cells):
 
 # %% Burst vs N
 plot_together = False
-step = 1500
+step = 15000
 plotting.SliderPlot(datas=getData(2), step=step, together=plot_together, extraPars=pars)
 
 # %% Phase Space
-# plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/scale)
+datas = getData(2)
+plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N)
 # %% Map
 # plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)
