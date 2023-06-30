@@ -72,14 +72,10 @@ class Plotting:
         def updatePar(val, iPar):
             extraPar = extraPars[iPar]
             datas = extraPar.ChangeFunction(extraPar.ParName, val)
-            _, yMin, _, yMax = self.CalculateBoundaries(datas)
-            if together:
-                ax.set_ylim(yMin, yMax)
-            else:
-                for n in range(len(datas)):
-                    ax[n].set_ylim(yMin, yMax)
-            for d in range(len(datas)):
-                linePlots[d].set_data(datas[d][0], datas[d][1])
+            bounds = self.CalculateBoundaries(datas)
+            for n in range(len(datas)):
+                ax[n].axis([0, step, bounds[n]["yMin"], bounds[n]["yMax"]])
+                linePlots[n].set_data(datas[n][0], datas[n][1])
 
         for iPar in range(len(extraPars)):
             extraPar = extraPars[iPar]

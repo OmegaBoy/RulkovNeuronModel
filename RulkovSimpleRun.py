@@ -40,7 +40,7 @@ def changePar(parName, parValue): #Change function
                 var[int(splitName[1])][int(splitName[2])] = parValue
                 setattr(rulkov, splitName[0], var)
     rulkov.Simulate()
-    return getData()
+    return getData(2)
 
 def getData(var = 0):
     datas=[]
