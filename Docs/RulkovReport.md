@@ -1,11 +1,11 @@
 # Simulación de neurona de Rulkov
 ## Equación del modelo de Rulkov
-<figure><img src="./Images/eq.png" style="width: 100%"><figcaption align="center"><b>Eq.1 - La variable x describe procesos rapidos en la neurona como los cambios de tension en la membrana.</br>La variable y describe los procesos lentos en la neurona como la apertura y cerrado de canales ionicos.</b></br></figcaption></figure>
+<figure><img style="display: block; margin-left: auto;margin-right: auto;" src="./Images/eq.png"><figcaption align="center"><b>Eq.1 - La variable x describe procesos rapidos en la neurona como los cambios de tension en la membrana.</br>La variable y describe los procesos lentos en la neurona como la apertura y cerrado de canales ionicos.</b></br></figcaption></figure>
 </br>
-<figure><img src="./Images/SimpleSpikes.png" style="width: 100%"><figcaption align="center"><b>Fig.1 - Renderización de un tren de spikes generado por la variable rápida y lenta del modelo. Parámetros utilizados: α = 4, β = 0.001, σ = 0.001</b></br></figcaption></figure>
+<figure><img src="./Images/SimpleSpikes.png" style="display: block; margin-left: auto;margin-right: auto;"><figcaption align="center"><b>Fig.1 - Renderización de un tren de spikes generado por la variable rápida y lenta del modelo. Parámetros utilizados: α = 4, β = 0.001, σ = 0.001</b></br></figcaption></figure>
 </br>
 <figure>
-  <table>
+  <table style="display: block; margin-left: auto;margin-right: auto;">
     <tr>
       <th>α</th>
       <th>β</th>
@@ -97,4 +97,7 @@
       <td>Tiene una zona transiente mayor que al ajustar x0</td>
     </tr>
   </table>
-<figcaption align="center"><b>Table.1 - Observaciones de los resultados al variar los parameros de la simulación</b></br></figcaption></figure>
+<figcaption align="center"><b>Table.1 - Observaciones de los resultados al variar los parameros de la simulación</b>
+</figcaption>
+</figure>
+</br>
