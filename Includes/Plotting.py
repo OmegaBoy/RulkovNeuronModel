@@ -51,8 +51,11 @@ class Plotting:
 
         bounds = self.CalculateBoundaries(datas, together)
 
-        for n in range(len(datas)):
-            ax[n].axis([0, step, bounds[n]["yMin"], bounds[n]["yMax"]])
+        if together:
+            self.plt.axis([0, step, bounds[0]["yMin"], bounds[0]["yMax"]])
+        else:
+            for n in range(len(datas)):
+                ax[n].axis([0, step, bounds[n]["yMin"], bounds[n]["yMax"]])
 
         axpos = self.plt.axes([0.2, bottom - 0.1, 0.65, 0.03], facecolor='lightgoldenrodyellow')
 
@@ -61,7 +64,7 @@ class Plotting:
         def update(val):
             pos = val
             if together:
-                ax.axis([pos, pos+step, bounds[n]["yMin"], bounds[n]["yMax"]])
+                ax.axis([pos, pos+step, bounds[0]["yMin"], bounds[0]["yMax"]])
             else:
                 for n in range(len(datas)):
                     ax[n].axis([pos, pos+step, bounds[n]["yMin"], bounds[n]["yMax"]])
@@ -72,9 +75,12 @@ class Plotting:
         def updatePar(val, iPar):
             extraPar = extraPars[iPar]
             datas = extraPar.ChangeFunction(extraPar.ParName, val)
-            bounds = self.CalculateBoundaries(datas)
+            bounds = self.CalculateBoundaries(datas, together)
             for n in range(len(datas)):
-                ax[n].axis([0, step, bounds[n]["yMin"], bounds[n]["yMax"]])
+                if together:
+                    ax.axis([0, step, bounds[0]["yMin"], bounds[0]["yMax"]])
+                else:    
+                    ax[n].axis([0, step, bounds[n]["yMin"], bounds[n]["yMax"]])
                 linePlots[n].set_data(datas[n][0], datas[n][1])
 
         for iPar in range(len(extraPars)):
@@ -167,7 +173,10 @@ class Plotting:
                     yMin = ynMin
                     yMax = ynMax
                 bounds.append({"xMin": xMin,"yMin": yMin,"xMax": xMax,"yMax": yMax})
-        return bounds
+        if together:
+            return [bounds[len(bounds) - 1]]
+        else:
+            return bounds
 
     def PlotPhaseSpace(self, x, y, N, step):
         stepi = 0

@@ -7,7 +7,7 @@ plotting = Plotting()
 
 # %% Rulkov Simulation
 # Inicializo los parametros para todas las celulas
-cells = 1
+cells = 2
 alpha_ini = 4.3
 sigma_ini = 0.001
 beta_ini = 0.001
@@ -66,7 +66,7 @@ for c in range(cells):
             pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.W[c][v], parName="W|" + str(c) + "|" + str(v), changeFunction=changePar))
 
 # %% Burst vs N
-plot_together = True
+plot_together = False
 step = 1000
 plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
 
