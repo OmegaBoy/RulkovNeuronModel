@@ -50,6 +50,9 @@ def getData(var = 0):
                 datas.append([[n for n in range(rulkov.N)], rulkov.x[c]])
             case 1:
                 datas.append([[n for n in range(rulkov.N)], rulkov.y[c]])
+            case 2:
+                datas.append([[n for n in range(rulkov.N)], rulkov.x[c]])
+                datas.append([[n for n in range(rulkov.N)], rulkov.y[c]])
     return datas
 
 # Parámetros
@@ -71,3 +74,8 @@ step = 1000
 plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
 
 # %% Caracterización
+# %% Phase Space
+datas = getData(2)
+plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N - 1)
+# %% Map
+plotting.PlotPhaseSpace(datas[0][1][0:rulkov.N-1], datas[1][1][1:rulkov.N], rulkov.N - 1, step=rulkov.N - 1)
