@@ -52,10 +52,9 @@ class SpikeAnalyzer:
                 x.append((bins_edges[n + 1] + bins_edges[n])/2)
                 y.append(hist[n])
 
-        lx = np.log(x)
-        ly = np.log(y)
+        lx = np.log10(x)
+        ly = np.log10(y)
 
-        import matplotlib.pyplot as plt
         ds = SpikeAnalyzer.CalculateSlopeSignal(lx, ly)
 
         slopeIndexes=[]

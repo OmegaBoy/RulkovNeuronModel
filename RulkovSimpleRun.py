@@ -71,10 +71,10 @@ for c in range(cells):
 # %% Burst vs N
 plot_together = False
 step = 15000
-plotting.SliderPlot(datas=getData(2), step=step, together=plot_together, extraPars=pars)
+datas = getData(2)
+plotting.SliderPlot(datas=datas, step=step, together=plot_together, extraPars=pars)
 
 # %% Phase Space
-datas = getData(2)
-plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N)
+plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/32)
 # %% Map
-# plotting.PlotPhaseSpace(rulkov.x[0:rulkov.N-1], rulkov.x[1:rulkov.N], rulkov.N - 1, step=4000)
+# plotting.PlotPhaseSpace(rulkov.x[0][0:rulkov.N-1], rulkov.x[0][1:rulkov.N], rulkov.N - 1, step=4000)

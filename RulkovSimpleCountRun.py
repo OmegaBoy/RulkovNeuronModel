@@ -72,11 +72,16 @@ plot_together = True
 step = 1000
 # plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
 
+spikedData = True
+noisedData = True
+diffedData = True
+timedData = True
+
 class SliderFunctions:
     def __init__(self) -> None:
         pass
 
-    def getData(self, noiseDev = None, threshold = None, refractoryTime = None):
+    def getData(self, noiseDev = None, threshold = None, refractoryTime = None, spikedData = True, noisedData = True, diffedData = True, timedData = True):
         Utilities.ChangeParameter(noiseDev, self, "noise")
         Utilities.ChangeParameter(threshold, self, "threshold")
         Utilities.ChangeParameter(refractoryTime, self, "refractoryTime")
@@ -84,28 +89,28 @@ class SliderFunctions:
         self.datas = []
 
         spiked = [[n for n in range(rulkov.N)], rulkov.x[0]]
-        self.datas.append(spiked)
+        if (spikedData): self.datas.append(spiked)
 
         noised = SpikeAnalyzer.AddNoiseToSignal(spiked[0], spiked[1], self.noise)
-        self.datas.append(noised)
+        if (noisedData): self.datas.append(noised)
 
         diffed = SpikeAnalyzer.DifferenciateSignal(noised[0], noised[1])
-        self.datas.append(diffed)
+        if (diffedData): self.datas.append(diffed)
 
         timed = SpikeAnalyzer.DetectSpikes(noised[0], noised[1], self.threshold, self.refractoryTime)
         timed.append('o')
-        self.datas.append(timed)
+        if (timedData): self.datas.append(timed)
 
         return self.datas
     
     def changePar(self, parName, parValue):
         match parName:
             case "noiseDev":
-                return self.getData(noiseDev=parValue)
+                return self.getData(noiseDev=parValue, spikedData=spikedData, noisedData=noisedData, diffedData=diffedData, timedData=timedData)
             case "threshold":
-                return self.getData(threshold=parValue)
+                return self.getData(threshold=parValue, spikedData=spikedData, noisedData=noisedData, diffedData=diffedData, timedData=timedData)
             case "refractoryTime":
-                return self.getData(refractoryTime=parValue)
+                return self.getData(refractoryTime=parValue, spikedData=spikedData, noisedData=noisedData, diffedData=diffedData, timedData=timedData)
             
     def changeParHist(self, parName, parValue):
         match parName:
@@ -125,23 +130,23 @@ refractoryTime = Plotting.DynamicPar('TextBox', refractoryTimeVal, 0, 10, "refra
 
 pars = [noiseDev, threshold, refractoryTime]
    
-sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal)
+sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal, spikedData=spikedData, noisedData=noisedData, diffedData=diffedData, timedData=timedData)
 # %% Calculo de intervalos
-scale = 400
+scale = 300
 bins = 80
-# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, extraSliders=pars)
+# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, extraPars=pars, zoom=0.5)
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]) # Obtengo los intervalos
 
 # %% Visor de intervalos
-# intervalsSub = 100 # Sublength of intervals
+intervalsSub = 500 # Sublength of intervals
 # plotting.PlotMultiple([[[i for i in range(intervalsSub)],intervals[0:intervalsSub], 'o']]) # Plot de los intervalos
 # plotting.PlotMultiple([[sliderFunc.datas[1][0][0:intervalsSub], sliderFunc.datas[1][1][0:intervalsSub]], [[i for i in range(intervalsSub)] ,intervals[0:intervalsSub]]], together=False)
 
 # %% Histogram
 doubleLog = True
-plotting.Histogram(intervals, bins, ylog=doubleLog, xlog=doubleLog)
+# plotting.Histogram(intervals, bins, ylog=doubleLog, xlog=doubleLog)
 
-# %% Calculo de Historgrama y sus pendientes (PENDIENTE DE MEJORA)
+# %% Calculo de Historgrama y sus pendientes
 slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas
 plotting.PlotHistogramSlopes(signal=intervals, bins=bins, slopesData=slopesData, ylog=doubleLog, xlog=doubleLog) # Graficamos el histograma con sus pendientes
 
