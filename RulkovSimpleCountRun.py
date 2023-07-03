@@ -70,7 +70,7 @@ for c in range(cells):
 # %% Burst vs N
 plot_together = True
 step = 1000
-# plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
+plotting.SliderPlot(datas=getData(), step=step, together=plot_together, extraPars=pars)
 
 spikedData = True
 noisedData = True
@@ -134,17 +134,17 @@ sliderFunc.getData(noiseDevVal, thresholdVal, refractoryTimeVal, spikedData=spik
 # %% Calculo de intervalos
 scale = 300
 bins = 80
-# plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, extraPars=pars, zoom=0.5)
+plotting.SliderPlot(datas=sliderFunc.datas, step=rulkov.N/scale, extraPars=pars, zoom=0.5)
 intervals = SpikeAnalyzer.SpikesIntervals(sliderFunc.datas[3][0]) # Obtengo los intervalos
 
 # %% Visor de intervalos
 intervalsSub = 500 # Sublength of intervals
-# plotting.PlotMultiple([[[i for i in range(intervalsSub)],intervals[0:intervalsSub], 'o']]) # Plot de los intervalos
+plotting.PlotMultiple([[[i for i in range(intervalsSub)],intervals[0:intervalsSub], 'o']]) # Plot de los intervalos
 # plotting.PlotMultiple([[sliderFunc.datas[1][0][0:intervalsSub], sliderFunc.datas[1][1][0:intervalsSub]], [[i for i in range(intervalsSub)] ,intervals[0:intervalsSub]]], together=False)
 
 # %% Histogram
 doubleLog = True
-# plotting.Histogram(intervals, bins, ylog=doubleLog, xlog=doubleLog)
+plotting.Histogram(intervals, bins, ylog=doubleLog, xlog=doubleLog)
 
 # %% Calculo de Historgrama y sus pendientes
 slopesData = SpikeAnalyzer.CalculateHistogramSlopes(intervals, bins, threshold=1, minSequenceSize=2) #Calculamos las pendientes de los histogramas

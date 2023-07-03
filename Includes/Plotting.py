@@ -31,8 +31,8 @@ class Plotting:
                 if logy == True:
                     ax[i].set_yscale('log')
 
-        ax.set_xlabel('Indice')
-        ax.set_ylabel('Pasos transcurridos entre detección')
+        ax.set_xlabel('Frecuencia')
+        ax.set_ylabel('Intensidad')
         self.plt.show()
 
     def SliderPlot(self, datas, step, together=True, extraPars=[], zoom=0.7):
@@ -216,7 +216,7 @@ class Plotting:
                     yMin = ynMin
                     yMax = ynMax
                 bounds.append({"xMin": xMin,
-                              "yMin": yMin*(1 + (1-zoom)), "xMax": xMax, "yMax": yMax*(1 + (1-zoom))})
+                              "yMin": (yMin + yMin*(1-zoom)), "xMax": xMax, "yMax": (yMax + yMax*(1-zoom))})
         if together:
             return [bounds[len(bounds) - 1]]
         else:
