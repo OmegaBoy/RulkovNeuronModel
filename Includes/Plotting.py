@@ -35,7 +35,7 @@ class Plotting:
         ax.set_ylabel('Intensidad')
         self.plt.show()
 
-    def SliderPlot(self, datas, step, together=True, extraPars=[], zoom=0.7):
+    def SliderPlot(self, datas, step, together=True, extraPars=[], zoom=1):
         if together:
             fig, ax = self.plt.subplots()
         else:

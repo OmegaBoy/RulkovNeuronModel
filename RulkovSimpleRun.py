@@ -68,13 +68,14 @@ for c in range(cells):
         if not c == v:
             pars.append(Plotting.DynamicPar(parType='TextBox', initialValue=rulkov.W[c][v], parName="W|" + str(c) + "|" + str(v), changeFunction=changePar))
 
-# %% Burst vs N
-plot_together = False
-step = 15000
-datas = getData(2)
-plotting.SliderPlot(datas=datas, step=step, together=plot_together, extraPars=pars)
+while(True):
+    # %% Burst vs N
+    plot_together = False
+    step = 1500
+    datas = getData(2)
+    plotting.SliderPlot(datas=datas, step=step, together=plot_together, extraPars=pars)
 
-# %% Phase Space
-plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/32)
-# %% Map
-plotting.PlotRecurrence(datas[0][1])
+    # %% Phase Space
+    plotting.PlotPhaseSpace(x=datas[0][1], y=datas[1][1], N=rulkov.N, step=rulkov.N/32)
+    # %% Map
+    plotting.PlotRecurrence(datas[0][1])
