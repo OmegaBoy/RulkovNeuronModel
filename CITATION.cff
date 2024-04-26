@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Gonzalez Pazo
+    given-names: Maximiliano Emanuel
+    orcid: https://orcid.org/0009-0000-7319-6073
+title: "Rulkov Python Neuron Model"
+version: 2.0.4
+identifiers:
+date-released: 2023-03-31
